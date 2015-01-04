@@ -1,0 +1,5 @@
+obsproject (0.7.2-1) unstable; urgency=low
+
+  * Initial release (Closes: #774744)
+
+ -- Carl Fürstenberg <azatoth@gmail.com>  Fri, 09 Jan 2015 19:34:46 +0100
