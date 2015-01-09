@@ -1,0 +1,26 @@
+From: =?utf-8?q?Carl_F=C3=BCrstenberg?= <azatoth@gmail.com>
+Date: Fri, 9 Jan 2015 20:19:22 +0100
+Subject: add SOVERSION to libobs-opengl
+
+a public shared library should have a proper SONAME
+---
+ libobs-opengl/CMakeLists.txt | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/libobs-opengl/CMakeLists.txt b/libobs-opengl/CMakeLists.txt
+index 9dea564..63be3e4 100644
+--- a/libobs-opengl/CMakeLists.txt
++++ b/libobs-opengl/CMakeLists.txt
+@@ -73,8 +73,10 @@ add_library(libobs-opengl MODULE
+ 	${libobs-opengl_HEADERS})
+ set_target_properties(libobs-opengl
+ 	PROPERTIES
+-		OUTPUT_NAME libobs-opengl
+-		PREFIX "")
++		OUTPUT_NAME obs-opengl
++		VERSION "0"
++		SOVERSION "0"
++		)
+ target_link_libraries(libobs-opengl
+ 	libobs
+ 	glad

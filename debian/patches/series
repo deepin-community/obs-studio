@@ -1,2 +1,3 @@
 0001-Use-common-license.patch
 0002-use-multiarch-compatible-plugin-lib-path.patch
+0003-add-SOVERSION-to-libobs-opengl.patch
