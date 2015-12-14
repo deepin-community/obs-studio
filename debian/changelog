@@ -1,5 +1,5 @@
-obsproject (0.12.4-1) unstable; urgency=low
+obs-studio (0.12.4-1) unstable; urgency=low
 
   * Initial release (Closes: #774744)
 
- -- Carl Fürstenberg <azatoth@gmail.com>  Tue, 15 Dec 2015 00:03:10 +0100
+ -- Carl Fürstenberg <azatoth@gmail.com>  Tue, 15 Dec 2015 00:19:33 +0100
