@@ -1,86 +1,110 @@
 Source: obs-studio
 Section: video
 Priority: optional
-Maintainer: Carl Fürstenberg <azatoth@gmail.com>
+Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
+Uploaders:
+ Carl Fürstenberg <azatoth@gmail.com>,
+ Sebastian Ramacher <sramacher@debian.org>
 Build-Depends:
- debhelper (>= 9),
  cmake,
- libavformat-dev,
+ debhelper (>= 9),
  libavcodec-dev,
+ libavdevice-dev,
+ libavfilter-dev,
+ libavformat-dev,
  libavutil-dev,
+ libcurl4-gnutls-dev | libcurl-dev,
+ libdbus-1-dev,
+ libfontconfig-dev,
+ libfreetype6-dev,
+ libgl1-mesa-dev | libgl-dev,
+ libjack-dev,
+ libjansson-dev (>= 2.5),
+ libpulse-dev,
+ libqt5x11extras5-dev,
  libswresample-dev,
  libswscale-dev,
+ libudev-dev,
+ libv4l-dev,
  libx11-dev,
- libgl1-mesa-dev | libgl-dev,
- libpulse-dev,
+ libx264-dev,
+ libxcb-shm0-dev,
+ libxcb-xinerama0-dev,
  libxcomposite-dev,
  libxinerama-dev,
- libv4l-dev,
- libudev-dev,
- libfreetype6-dev,
- libfontconfig-dev,
- qtbase5-dev,
- libqt5x11extras5-dev,
- libx264-dev,
- libxcb-xinerama0-dev,
- libxcb-shm0-dev
-Standards-Version: 3.9.5
-Homepage: https://obsproject.com/
-#Vcs-Git: git://anonscm.debian.org/collab-maint/obs.git
-#Vcs-Browser: http://anonscm.debian.org/?p=collab-maint/obs.git;a=summary
+ qtbase5-dev
+Standards-Version: 3.9.7
+Homepage: https://obsproject.com
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-multimedia/obs-studio.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-multimedia/obs-studio.git
 
 Package: obs-studio
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libobs0 (>= ${binary:Version}), obs-plugins (>= ${binary:Version})
-Description: OBS Studio
- a rewrite of what was formerly known as "Open Broadcaster
- Software", software originally designed for recording and streaming live
- video content, efficiently.
+Depends: obs-plugins (>= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
+Description: recorder and streamer for live video content
+ OBS Studio is designed for efficiently recording and streaming live video
+ content. It supports live RTP streaming to various streaming sites.
+ .
+ Other features include:
+  * Encoding using H264 (x264) and AAC
+  * Unlimited number of scenes and sources
+  * File output to MP4 or FLV
+  * GPU-based game capture for high performance game streaming
+  * Bilinear or lanczos3 resampling
 
 Package: obs-plugins
 Multi-Arch: same
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libobs0 (>= ${binary:Version})
-Pre-Depends: ${misc:Pre-Depends}
-Description: OBS Studio Plugins
- a rewrite of what was formerly known as "Open Broadcaster
- Software", software originally designed for recording and streaming live
- video content, efficiently.
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: recorder and streamer for live video content (plugins)
+ OBS is designed for efficiently recording and streaming live video content. It
+ supports live RTP streaming to various streaming sites.
  .
- This package contains various default plugins for obs-studio.
+ This package contains the plugins.
 
 Package: libobs0
 Multi-Arch: same
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Description: OBS library
- a rewrite of what was formerly known as "Open Broadcaster
- Software", software originally designed for recording and streaming live
- video content, efficiently.
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: recorder and streamer for live video content (shared library)
+ OBS Studio is designed for efficiently recording and streaming live video
+ content. It supports live RTP streaming to various streaming sites.
  .
- this package contains the libraries needed for obs-studio.
+ This package contains the shared library libobs.
 
-Package: libobs0-dbg
-Section: debug
-Priority: extra
+Package: libobsglad0
+Multi-Arch: same
+Section: libs
 Architecture: any
-Depends: ${misc:Depends}, libobs0 (= ${binary:Version})
-Description: debugging symbols for OBS library
- a rewrite of what was formerly known as "Open Broadcaster
- Software", software originally designed for recording and streaming live
- video content, efficiently.
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: recorder and streamer for live video content (shared library)
+ OBS Studio is designed for efficiently recording and streaming live video
+ content. It supports live RTP streaming to various streaming sites.
  .
- This package contains the debugging symbols for libobs0.
+ This package contains the shared library libobsglad.
+
+Package: libobs-opengl0
+Multi-Arch: same
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: recorder and streamer for live video content (shared library)
+ OBS Studio is designed for efficiently recording and streaming live video
+ content. It supports live RTP streaming to various streaming sites.
+ .
+ This package contains the shared library libobs-opengl.
 
 Package: libobs-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libobs0 (= ${binary:Version})
-Description: OBS library development files
- a rewrite of what was formerly known as "Open Broadcaster
- Software", software originally designed for recording and streaming live
- video content, efficiently.
+Depends:
+ libobs-opengl0 (= ${binary:Version}),
+ libobs0 (= ${binary:Version}),
+ libobsglad0 (= ${binary:Version}),
+ ${misc:Depends}
+Description: recorder and streamer for live video content (development files)
+ OBS Studio is designed for efficiently recording and streaming live video
+ content. It supports live RTP streaming to various streaming sites.
  .
- This package contains the development files for libobs0.
+ This package contains the development files.

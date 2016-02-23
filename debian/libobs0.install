@@ -1,2 +1,2 @@
-usr/lib/*/lib*.so.*
+usr/lib/*/libobs.so.*
 usr/share/obs/libobs/*
