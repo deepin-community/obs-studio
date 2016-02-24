@@ -73,35 +73,11 @@ Description: recorder and streamer for live video content (shared library)
  .
  This package contains the shared library libobs.
 
-Package: libobsglad0
-Multi-Arch: same
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: recorder and streamer for live video content (shared library, OpenGL wrapper)
- OBS Studio is designed for efficiently recording and streaming live video
- content. It supports live RTP streaming to various streaming sites.
- .
- This package contains the shared library libobsglad.
-
-Package: libobs-opengl0
-Multi-Arch: same
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: recorder and streamer for live video content (shared library, OpenGL support)
- OBS Studio is designed for efficiently recording and streaming live video
- content. It supports live RTP streaming to various streaming sites.
- .
- This package contains the shared library libobs-opengl.
-
 Package: libobs-dev
 Section: libdevel
 Architecture: any
 Depends:
- libobs-opengl0 (= ${binary:Version}),
  libobs0 (= ${binary:Version}),
- libobsglad0 (= ${binary:Version}),
  ${misc:Depends}
 Description: recorder and streamer for live video content (development files)
  OBS Studio is designed for efficiently recording and streaming live video
