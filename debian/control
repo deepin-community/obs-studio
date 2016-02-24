@@ -78,7 +78,7 @@ Multi-Arch: same
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: recorder and streamer for live video content (shared library)
+Description: recorder and streamer for live video content (shared library, OpenGL wrapper)
  OBS Studio is designed for efficiently recording and streaming live video
  content. It supports live RTP streaming to various streaming sites.
  .
@@ -89,7 +89,7 @@ Multi-Arch: same
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: recorder and streamer for live video content (shared library)
+Description: recorder and streamer for live video content (shared library, OpenGL support)
  OBS Studio is designed for efficiently recording and streaming live video
  content. It supports live RTP streaming to various streaming sites.
  .
