@@ -1,6 +1,6 @@
 Description: Various build system fixes
  This fixes issues with underlinking and build libobs with -fvisibility=hidden
- to hide internal symbols.
+ to hide internal symbols. It also disables -msse*.
 Author: Sebastian Ramacher <sramacher@debian.org>
 Last-Update: 2016-02-24
 
