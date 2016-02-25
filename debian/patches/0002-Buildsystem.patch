@@ -39,17 +39,25 @@ Last-Update: 2016-02-24
  	if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
  		# use the sysinfo compatibility library on bsd
  		find_package(Libsysinfo REQUIRED)
-@@ -354,6 +373,10 @@
- 			-msse2)
- endif()
+@@ -346,15 +365,11 @@
+ 	PUBLIC
+ 		HAVE_OBSCONFIG_H)
  
+-if(NOT MSVC)
+-	target_compile_options(libobs
+-		PUBLIC
+-			-mmmx
+-			-msse
+-			-msse2)
 +if(UNIX)
 +	set_source_files_properties(${libobs_SOURCES} PROPERTIES
 +			COMPILE_FLAGS "-fvisibility=hidden")
-+endif()
+ endif()
  
+-
  target_compile_options(libobs
  	PUBLIC
+ 		"${THREADS_DEFINITIONS}")
 --- a/obs/CMakeLists.txt
 +++ b/obs/CMakeLists.txt
 @@ -81,16 +81,13 @@
