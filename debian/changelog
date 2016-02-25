@@ -1,5 +1,5 @@
-obs-studio (0.13.2+dfsg1-1) UNRELEASED; urgency=medium
+obs-studio (0.13.2+dfsg1-1) unstable; urgency=medium
 
   * Initial release (Closes: #774744)
 
- -- Sebastian Ramacher <sramacher@debian.org>  Tue, 23 Feb 2016 21:20:35 +0100
+ -- Sebastian Ramacher <sramacher@debian.org>  Thu, 25 Feb 2016 20:42:33 +0100
