@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/architecture.mk
+
 export DEB_LDFLAGS_MAINT_APPEND=-Wl,--as-needed
 export DEB_CPPFLAGS_MAINT_APPEND=-DFFMPEG_MUX_FIXED=\"/usr/lib/$(DEB_HOST_MULTIARCH)/obs-plugins/obs-ffmpeg/ffmpeg-mux\"
-
-include /usr/share/dpkg/architecture.mk
 
 %:
 	dh $@ --parallel
