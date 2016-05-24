@@ -30,6 +30,11 @@ Copyright:
  1998-2001 Ross Johnson
 License: LGPL-2.1+
 
+Files: deps/libff/*
+Copyright: 2014,2016 by Hugh Bailey <obs.jim@gmail.com>
+           2015 John R. Bradley <jrb@turrettech.com>
+License: Expat
+
 Files: plugins/text-freetype2/obs-convenience.c
        plugins/text-freetype2/text-freetype2.h
        plugins/text-freetype2/text-functionality.c
