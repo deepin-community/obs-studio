@@ -132,6 +132,9 @@ OBSBasic::OBSBasic(QWidget *parent)
 		int posy = config_get_int(App()->GlobalConfig(), "BasicWindow",
 				"posy");
 
+		if (!WindowPositionValid(posx, posy))
+			posx = posy = 0;
+
 		setGeometry(posx, posy, width, height);
 	}
 
@@ -247,6 +250,7 @@ static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
 
 static obs_data_t *GenerateSaveData(obs_data_array_t *sceneOrder,
 		obs_data_array_t *quickTransitionData, int transitionDuration,
+		obs_data_array_t *transitions,
 		OBSScene &scene, OBSSource &curProgramScene)
 {
 	obs_data_t *saveData = obs_data_create();
@@ -287,6 +291,7 @@ static obs_data_t *GenerateSaveData(obs_data_array_t *sceneOrder,
 	obs_data_set_string(saveData, "name", sceneCollection);
 	obs_data_set_array(saveData, "sources", sourcesArray);
 	obs_data_set_array(saveData, "quick_transitions", quickTransitionData);
+	obs_data_set_array(saveData, "transitions", transitions);
 	obs_data_array_release(sourcesArray);
 
 	obs_data_set_string(saveData, "current_transition",
@@ -352,9 +357,10 @@ void OBSBasic::Save(const char *file)
 		curProgramScene = obs_scene_get_source(scene);
 
 	obs_data_array_t *sceneOrder = SaveSceneListOrder();
+	obs_data_array_t *transitions = SaveTransitions();
 	obs_data_array_t *quickTrData = SaveQuickTransitions();
 	obs_data_t *saveData  = GenerateSaveData(sceneOrder, quickTrData,
-			ui->transitionDuration->value(),
+			ui->transitionDuration->value(), transitions,
 			scene, curProgramScene);
 
 	if (!obs_data_save_json_safe(saveData, file, "tmp", "bak"))
@@ -363,6 +369,7 @@ void OBSBasic::Save(const char *file)
 	obs_data_release(saveData);
 	obs_data_array_release(sceneOrder);
 	obs_data_array_release(quickTrData);
+	obs_data_array_release(transitions);
 }
 
 static void LoadAudioDevice(const char *name, int channel, obs_data_t *parent)
@@ -488,12 +495,19 @@ void OBSBasic::Load(const char *file)
 
 	obs_data_array_t *sceneOrder = obs_data_get_array(data, "scene_order");
 	obs_data_array_t *sources    = obs_data_get_array(data, "sources");
+	obs_data_array_t *transitions= obs_data_get_array(data, "transitions");
 	const char       *sceneName = obs_data_get_string(data,
 			"current_scene");
 	const char       *programSceneName = obs_data_get_string(data,
 			"current_program_scene");
 	const char       *transitionName = obs_data_get_string(data,
 			"current_transition");
+
+	if (!opt_starting_scene.empty()) {
+		programSceneName = opt_starting_scene.c_str();
+		if (!IsPreviewProgramMode())
+			sceneName = opt_starting_scene.c_str();
+	}
 
 	int newDuration = obs_data_get_int(data, "transition_duration");
 	if (!newDuration)
@@ -521,10 +535,14 @@ void OBSBasic::Load(const char *file)
 	LoadAudioDevice(AUX_AUDIO_2,     4, data);
 	LoadAudioDevice(AUX_AUDIO_3,     5, data);
 
-	obs_load_sources(sources);
+	obs_load_sources(sources, OBSBasic::SourceLoaded, this);
 
+	if (transitions)
+		LoadTransitions(transitions);
 	if (sceneOrder)
 		LoadSceneListOrder(sceneOrder);
+
+	obs_data_array_release(transitions);
 
 	curTransition = FindTransition(transitionName);
 	if (!curTransition)
@@ -533,8 +551,22 @@ void OBSBasic::Load(const char *file)
 	ui->transitionDuration->setValue(newDuration);
 	SetTransition(curTransition);
 
+retryScene:
 	curScene = obs_get_source_by_name(sceneName);
 	curProgramScene = obs_get_source_by_name(programSceneName);
+
+	/* if the starting scene command line parameter is bad at all,
+	 * fall back to original settings */
+	if (!opt_starting_scene.empty() && (!curScene || !curProgramScene)) {
+		sceneName = obs_data_get_string(data, "current_scene");
+		programSceneName = obs_data_get_string(data,
+				"current_program_scene");
+		obs_source_release(curScene);
+		obs_source_release(curProgramScene);
+		opt_starting_scene.clear();
+		goto retryScene;
+	}
+
 	if (!curProgramScene) {
 		curProgramScene = curScene;
 		obs_source_addref(curScene);
@@ -565,6 +597,21 @@ void OBSBasic::Load(const char *file)
 	RefreshQuickTransitions();
 
 	obs_data_release(data);
+
+	if (!opt_starting_scene.empty())
+		opt_starting_scene.clear();
+
+	if (opt_start_streaming) {
+		QMetaObject::invokeMethod(this, "StartStreaming",
+				Qt::QueuedConnection);
+		opt_start_streaming = false;
+	}
+
+	if (opt_start_recording) {
+		QMetaObject::invokeMethod(this, "StartRecording",
+				Qt::QueuedConnection);
+		opt_start_recording = false;
+	}
 
 	disableSaving--;
 }
@@ -694,9 +741,13 @@ bool OBSBasic::InitBasicConfigDefaults()
 			"flv");
 	config_set_default_uint  (basicConfig, "SimpleOutput", "VBitrate",
 			2500);
+	config_set_default_string(basicConfig, "SimpleOutput", "StreamEncoder",
+			SIMPLE_ENCODER_X264);
 	config_set_default_uint  (basicConfig, "SimpleOutput", "ABitrate", 160);
 	config_set_default_bool  (basicConfig, "SimpleOutput", "UseAdvanced",
 			false);
+	config_set_default_bool  (basicConfig, "SimpleOutput", "EnforceBitrate",
+			true);
 	config_set_default_string(basicConfig, "SimpleOutput", "Preset",
 			"veryfast");
 	config_set_default_string(basicConfig, "SimpleOutput", "RecQuality",
@@ -739,6 +790,9 @@ bool OBSBasic::InitBasicConfigDefaults()
 
 	config_set_default_uint  (basicConfig, "Video", "BaseCX",   cx);
 	config_set_default_uint  (basicConfig, "Video", "BaseCY",   cy);
+
+	config_set_default_string(basicConfig, "Output", "FilenameFormatting",
+			"%CCYY-%MM-%DD %hh-%mm-%ss");
 
 	config_set_default_bool  (basicConfig, "Output", "DelayEnable", false);
 	config_set_default_uint  (basicConfig, "Output", "DelaySec", 20);
@@ -826,8 +880,6 @@ void OBSBasic::InitOBSCallbacks()
 	ProfileScope("OBSBasic::InitOBSCallbacks");
 
 	signalHandlers.reserve(signalHandlers.size() + 6);
-	signalHandlers.emplace_back(obs_get_signal_handler(), "source_load",
-			OBSBasic::SourceLoaded, this);
 	signalHandlers.emplace_back(obs_get_signal_handler(), "source_remove",
 			OBSBasic::SourceRemoved, this);
 	signalHandlers.emplace_back(obs_get_signal_handler(), "source_activate",
@@ -851,6 +903,26 @@ void OBSBasic::InitPrimitives()
 	gs_vertex2f(1.0f, 0.0f);
 	gs_vertex2f(0.0f, 0.0f);
 	box = gs_render_save();
+
+	gs_render_start(true);
+	gs_vertex2f(0.0f, 0.0f);
+	gs_vertex2f(0.0f, 1.0f);
+	boxLeft = gs_render_save();
+
+	gs_render_start(true);
+	gs_vertex2f(0.0f, 0.0f);
+	gs_vertex2f(1.0f, 0.0f);
+	boxTop = gs_render_save();
+
+	gs_render_start(true);
+	gs_vertex2f(1.0f, 0.0f);
+	gs_vertex2f(1.0f, 1.0f);
+	boxRight = gs_render_save();
+
+	gs_render_start(true);
+	gs_vertex2f(0.0f, 1.0f);
+	gs_vertex2f(1.0f, 1.0f);
+	boxBottom = gs_render_save();
 
 	gs_render_start(true);
 	for (int i = 0; i <= 360; i += (360/20)) {
@@ -1269,6 +1341,10 @@ OBSBasic::~OBSBasic()
 
 	obs_enter_graphics();
 	gs_vertexbuffer_destroy(box);
+	gs_vertexbuffer_destroy(boxLeft);
+	gs_vertexbuffer_destroy(boxTop);
+	gs_vertexbuffer_destroy(boxRight);
+	gs_vertexbuffer_destroy(boxBottom);
 	gs_vertexbuffer_destroy(circle);
 	obs_leave_graphics();
 
@@ -2022,10 +2098,9 @@ void OBSBasic::SceneItemDeselected(void *data, calldata_t *params)
 			Q_ARG(bool, false));
 }
 
-void OBSBasic::SourceLoaded(void *data, calldata_t *params)
+void OBSBasic::SourceLoaded(void *data, obs_source_t *source)
 {
 	OBSBasic *window = static_cast<OBSBasic*>(data);
-	obs_source_t *source = (obs_source_t*)calldata_ptr(params, "source");
 
 	if (obs_scene_from_source(source) != NULL)
 		QMetaObject::invokeMethod(window,
@@ -2741,6 +2816,71 @@ void OBSBasic::EditSceneItemName()
 	item->setFlags(flags);
 }
 
+void OBSBasic::SetDeinterlacingMode()
+{
+	QAction *action = reinterpret_cast<QAction*>(sender());
+	obs_deinterlace_mode mode =
+		(obs_deinterlace_mode)action->property("mode").toInt();
+	OBSSceneItem sceneItem = GetCurrentSceneItem();
+	obs_source_t *source = obs_sceneitem_get_source(sceneItem);
+
+	obs_source_set_deinterlace_mode(source, mode);
+}
+
+void OBSBasic::SetDeinterlacingOrder()
+{
+	QAction *action = reinterpret_cast<QAction*>(sender());
+	obs_deinterlace_field_order order =
+		(obs_deinterlace_field_order)action->property("order").toInt();
+	OBSSceneItem sceneItem = GetCurrentSceneItem();
+	obs_source_t *source = obs_sceneitem_get_source(sceneItem);
+
+	obs_source_set_deinterlace_field_order(source, order);
+}
+
+QMenu *OBSBasic::AddDeinterlacingMenu(obs_source_t *source)
+{
+	QMenu *menu = new QMenu(QTStr("Deinterlacing"));
+	obs_deinterlace_mode deinterlaceMode =
+		obs_source_get_deinterlace_mode(source);
+	obs_deinterlace_field_order deinterlaceOrder =
+		obs_source_get_deinterlace_field_order(source);
+	QAction *action;
+
+#define ADD_MODE(name, mode) \
+	action = menu->addAction(QTStr("" name), this, \
+				SLOT(SetDeinterlacingMode())); \
+	action->setProperty("mode", (int)mode); \
+	action->setCheckable(true); \
+	action->setChecked(deinterlaceMode == mode);
+
+	ADD_MODE("Disable",                OBS_DEINTERLACE_MODE_DISABLE);
+	ADD_MODE("Deinterlacing.Discard",  OBS_DEINTERLACE_MODE_DISCARD);
+	ADD_MODE("Deinterlacing.Retro",    OBS_DEINTERLACE_MODE_RETRO);
+	ADD_MODE("Deinterlacing.Blend",    OBS_DEINTERLACE_MODE_BLEND);
+	ADD_MODE("Deinterlacing.Blend2x",  OBS_DEINTERLACE_MODE_BLEND_2X);
+	ADD_MODE("Deinterlacing.Linear",   OBS_DEINTERLACE_MODE_LINEAR);
+	ADD_MODE("Deinterlacing.Linear2x", OBS_DEINTERLACE_MODE_LINEAR_2X);
+	ADD_MODE("Deinterlacing.Yadif",    OBS_DEINTERLACE_MODE_YADIF);
+	ADD_MODE("Deinterlacing.Yadif2x",  OBS_DEINTERLACE_MODE_YADIF_2X);
+#undef ADD_MODE
+
+	menu->addSeparator();
+
+#define ADD_ORDER(name, order) \
+	action = menu->addAction(QTStr("Deinterlacing." name), this, \
+				SLOT(SetDeinterlacingOrder())); \
+	action->setProperty("order", (int)order); \
+	action->setCheckable(true); \
+	action->setChecked(deinterlaceOrder == order);
+
+	ADD_ORDER("TopFieldFirst",    OBS_DEINTERLACE_FIELD_ORDER_TOP);
+	ADD_ORDER("BottomFieldFirst", OBS_DEINTERLACE_FIELD_ORDER_BOTTOM);
+#undef ADD_ORDER
+
+	return menu;
+}
+
 void OBSBasic::CreateSourcePopupMenu(QListWidgetItem *item, bool preview)
 {
 	QMenu popup(this);
@@ -2776,6 +2916,9 @@ void OBSBasic::CreateSourcePopupMenu(QListWidgetItem *item, bool preview)
 
 		OBSSceneItem sceneItem = GetSceneItem(item);
 		obs_source_t *source = obs_sceneitem_get_source(sceneItem);
+		uint32_t flags = obs_source_get_output_flags(source);
+		bool isAsyncVideo = (flags & OBS_SOURCE_ASYNC_VIDEO) ==
+			OBS_SOURCE_ASYNC_VIDEO;
 		QAction *action;
 
 		popup.addAction(QTStr("Rename"), this,
@@ -2792,6 +2935,10 @@ void OBSBasic::CreateSourcePopupMenu(QListWidgetItem *item, bool preview)
 				SLOT(OpenSourceProjector()));
 
 		popup.addSeparator();
+		if (isAsyncVideo) {
+			popup.addMenu(AddDeinterlacingMenu(source));
+			popup.addSeparator();
+		}
 		popup.addMenu(sourceProjector);
 		popup.addSeparator();
 
@@ -3609,6 +3756,8 @@ void OBSBasic::on_actionResetTransform_triggered()
 		if (!obs_sceneitem_selected(item))
 			return true;
 
+		obs_sceneitem_defer_update_begin(item);
+
 		obs_transform_info info;
 		vec2_set(&info.pos, 0.0f, 0.0f);
 		vec2_set(&info.scale, 1.0f, 1.0f);
@@ -3618,6 +3767,11 @@ void OBSBasic::on_actionResetTransform_triggered()
 		info.bounds_alignment = OBS_ALIGN_CENTER;
 		vec2_set(&info.bounds, 0.0f, 0.0f);
 		obs_sceneitem_set_info(item, &info);
+
+		obs_sceneitem_crop crop = {};
+		obs_sceneitem_set_crop(item, &crop);
+
+		obs_sceneitem_defer_update_end(item);
 
 		UNUSED_PARAMETER(scene);
 		UNUSED_PARAMETER(param);
@@ -3884,7 +4038,7 @@ void OBSBasic::OpenProjector(obs_source_t *source, int monitor)
 	delete projectors[monitor];
 	projectors[monitor].clear();
 
-	OBSProjector *projector = new OBSProjector(this, source);
+	OBSProjector *projector = new OBSProjector(nullptr, source);
 	projector->Init(monitor);
 
 	projectors[monitor] = projector;
