@@ -8,7 +8,7 @@ Files-Excluded:
 
 Files: *
 Copyright: 2013-2016 by Hugh Bailey <obs.jim@gmail.com>
-License: GPL-2.0+
+License: GPL-2+
 
 Files: deps/jansson/*
 Copyright:
@@ -41,7 +41,7 @@ Files: plugins/text-freetype2/obs-convenience.c
        plugins/text-freetype2/text-freetype2.c
        plugins/text-freetype2/obs-convenience.h
 Copyright: 2014 by Nibbles
-License: GPL-2.0+
+License: GPL-2+
 
 Files: libobs/obs-audio-controls.*
        plugins/text-freetype2/find-font-unix.c
@@ -53,19 +53,19 @@ Files: libobs/obs-audio-controls.*
        plugins/linux-capture/xshm-input.c
        plugins/linux-v4l2/*
 Copyright: 2014 by Leonhard Oelke <leonhard@in-verted.de>
-License: GPL-2.0+
+License: GPL-2+
 
 Files:
  libobs-opengl/gl-subsystem.c
  obs/platform-x11.cpp
 Copyright: 2014 by Zachary Lund <admin@computerquip.com>
            2013 by Hugh Bailey <obs.jim@gmail.com>
-License: GPL-2.0+
+License: GPL-2+
 
 Files: libobs/obs-nix.c
 Copyright: 2013 by Hugh Bailey <obs.jim@gmail.com>
            2014 by Zachary Lund <admin@computerquip.com>
-License: GPL-2.0+
+License: GPL-2+
 
 Files: libobs-opengl/gl-cocoa.m
        libobs/obs-cocoa.c
@@ -75,11 +75,11 @@ Files: libobs-opengl/gl-cocoa.m
        libobs/media-io/media-remux.h
        libobs/media-io/video-fourcc.c
 Copyright: 2013-2014 by Ruwen Hahn <palana@stunned.de>
-License: GPL-2.0+
+License: GPL-2+
 
 Files: libobs-opengl/gl-x11.c
 Copyright: 2014 by Zachary Lund <admin@computerquip.com>
-License: GPL-2.0+
+License: GPL-2+
 
 Files: libobs/callback/*
        libobs/util/*
@@ -151,13 +151,17 @@ License: public-domain
  For details, see http://sourceforge.net/projects/libb64.
 Comment: Embedded copy of libb64.
 
+Files: plugins/linux-alsa/*
+Copyright: 2015 Guillermo A. Armaral B.
+License: GPL-2+
+
 Files: debian/*
 Copyright:
  2015 Carl Fürstenberg <azatoth@gmail.com>
  2016 Sebastian Ramacher <sramacher@debian.org>
-License: GPL-2.0+
+License: GPL-2+
 
-License: GPL-2.0+
+License: GPL-2+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
