@@ -54,8 +54,8 @@ static bool init_encoder(struct obs_encoder *encoder, const char *name,
 		return false;
 	if (pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE) != 0)
 		return false;
-	if (!obs_context_data_init(&encoder->context, settings, name,
-				hotkey_data, false))
+	if (!obs_context_data_init(&encoder->context, OBS_OBJ_TYPE_ENCODER,
+				settings, name, hotkey_data, false))
 		return false;
 	if (pthread_mutex_init(&encoder->init_mutex, &attr) != 0)
 		return false;
@@ -731,7 +731,7 @@ static void send_first_video_packet(struct obs_encoder *encoder,
 
 	da_init(data);
 
-	if (!get_sei(encoder, &sei, &size)) {
+	if (!get_sei(encoder, &sei, &size) || !sei || !size) {
 		cb->new_packet(cb->param, packet);
 		cb->sent_first_packet = true;
 		return;
@@ -1149,4 +1149,10 @@ const char *obs_encoder_get_id(const obs_encoder_t *encoder)
 {
 	return obs_encoder_valid(encoder, "obs_encoder_get_id")
 		? encoder->info.id : NULL;
+}
+
+uint32_t obs_get_encoder_caps(const char *encoder_id)
+{
+	struct obs_encoder_info *info = find_encoder(encoder_id);
+	return info ? info->caps : 0;
 }

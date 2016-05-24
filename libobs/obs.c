@@ -215,6 +215,17 @@ static bool obs_init_textures(struct obs_video_info *ovi)
 	return true;
 }
 
+gs_effect_t *obs_load_effect(gs_effect_t **effect, const char *file)
+{
+	if (!*effect) {
+		char *filename = find_libobs_data_file(file);
+		*effect = gs_effect_create_from_file(filename, NULL);
+		bfree(filename);
+	}
+
+	return *effect;
+}
+
 static int obs_init_graphics(struct obs_video_info *ovi)
 {
 	struct obs_core_video *video = &obs->video;
@@ -280,6 +291,11 @@ static int obs_init_graphics(struct obs_video_info *ovi)
 			NULL);
 	bfree(filename);
 
+	filename = find_libobs_data_file("premultiplied_alpha.effect");
+	video->premultiplied_alpha_effect = gs_effect_create_from_file(filename,
+			NULL);
+	bfree(filename);
+
 	obs->video.transparent_texture = gs_texture_create(2, 2, GS_RGBA, 1,
 			&transparent_tex, 0);
 
@@ -294,6 +310,8 @@ static int obs_init_graphics(struct obs_video_info *ovi)
 	if (!video->solid_effect)
 		success = false;
 	if (!video->conversion_effect)
+		success = false;
+	if (!video->premultiplied_alpha_effect)
 		success = false;
 	if (!video->transparent_texture)
 		success = false;
@@ -1340,6 +1358,8 @@ gs_effect_t *obs_get_base_effect(enum obs_base_effect effect)
 		return obs->video.lanczos_effect;
 	case OBS_EFFECT_BILINEAR_LOWRES:
 		return obs->video.bilinear_lowres_effect;
+	case OBS_EFFECT_PREMULTIPLIED_ALPHA:
+		return obs->video.premultiplied_alpha_effect;
 	}
 
 	return NULL;
@@ -1401,6 +1421,8 @@ static obs_source_t *obs_load_source_type(obs_data_t *source_data)
 	int64_t      sync;
 	uint32_t     flags;
 	uint32_t     mixers;
+	int          di_order;
+	int          di_mode;
 
 	source = obs_source_create(id, name, settings, hotkeys);
 
@@ -1444,6 +1466,14 @@ static obs_source_t *obs_load_source_type(obs_data_t *source_data)
 	obs_source_set_push_to_talk_delay(source,
 			obs_data_get_int(source_data, "push-to-talk-delay"));
 
+	di_mode = (int)obs_data_get_int(source_data, "deinterlace_mode");
+	obs_source_set_deinterlace_mode(source,
+			(enum obs_deinterlace_mode)di_mode);
+
+	di_order = (int)obs_data_get_int(source_data, "deinterlace_field_order");
+	obs_source_set_deinterlace_field_order(source,
+			(enum obs_deinterlace_field_order)di_order);
+
 	if (filters) {
 		size_t count = obs_data_array_count(filters);
 
@@ -1474,7 +1504,8 @@ obs_source_t *obs_load_source(obs_data_t *source_data)
 	return obs_load_source_type(source_data);
 }
 
-void obs_load_sources(obs_data_array_t *array)
+void obs_load_sources(obs_data_array_t *array, obs_load_source_cb cb,
+		void *private_data)
 {
 	if (!obs) return;
 
@@ -1507,6 +1538,7 @@ void obs_load_sources(obs_data_array_t *array)
 			if (source->info.type == OBS_SOURCE_TYPE_TRANSITION)
 				obs_transition_load(source, source_data);
 			obs_source_load(source);
+			cb(private_data, source);
 		}
 		obs_data_release(source_data);
 	}
@@ -1538,6 +1570,9 @@ obs_data_t *obs_save_source(obs_source_t *source)
 	uint64_t   ptm_delay   = obs_source_get_push_to_mute_delay(source);
 	bool       push_to_talk= obs_source_push_to_talk_enabled(source);
 	uint64_t   ptt_delay   = obs_source_get_push_to_talk_delay(source);
+	int        di_mode     = (int)obs_source_get_deinterlace_mode(source);
+	int        di_order    =
+		(int)obs_source_get_deinterlace_field_order(source);
 
 	obs_source_save(source);
 	hotkeys = obs_hotkeys_save_source(source);
@@ -1562,6 +1597,8 @@ obs_data_t *obs_save_source(obs_source_t *source)
 	obs_data_set_bool  (source_data, "push-to-talk", push_to_talk);
 	obs_data_set_int   (source_data, "push-to-talk-delay", ptt_delay);
 	obs_data_set_obj   (source_data, "hotkeys",  hotkey_data);
+	obs_data_set_int   (source_data, "deinterlace_mode", di_mode);
+	obs_data_set_int   (source_data, "deinterlace_field_order", di_order);
 
 	if (source->info.type == OBS_SOURCE_TYPE_TRANSITION)
 		obs_transition_save(source, source_data);
@@ -1650,6 +1687,7 @@ static inline char *dup_name(const char *name, bool private)
 
 static inline bool obs_context_data_init_wrap(
 		struct obs_context_data *context,
+		enum obs_obj_type       type,
 		obs_data_t              *settings,
 		const char              *name,
 		obs_data_t              *hotkey_data,
@@ -1658,6 +1696,7 @@ static inline bool obs_context_data_init_wrap(
 	assert(context);
 	memset(context, 0, sizeof(*context));
 	context->private = private;
+	context->type = type;
 
 	pthread_mutex_init_value(&context->rename_cache_mutex);
 	if (pthread_mutex_init(&context->rename_cache_mutex, NULL) < 0)
@@ -1679,13 +1718,14 @@ static inline bool obs_context_data_init_wrap(
 
 bool obs_context_data_init(
 		struct obs_context_data *context,
+		enum obs_obj_type       type,
 		obs_data_t              *settings,
 		const char              *name,
 		obs_data_t              *hotkey_data,
 		bool                    private)
 {
-	if (obs_context_data_init_wrap(context, settings, name, hotkey_data,
-				private)) {
+	if (obs_context_data_init_wrap(context, type, settings, name,
+				hotkey_data, private)) {
 		return true;
 	} else {
 		obs_context_data_free(context);
@@ -1767,4 +1807,36 @@ profiler_name_store_t *obs_get_profiler_name_store(void)
 uint64_t obs_get_video_frame_time(void)
 {
 	return obs ? obs->video.video_time : 0;
+}
+
+enum obs_obj_type obs_obj_get_type(void *obj)
+{
+	struct obs_context_data *context = obj;
+	return context ? context->type : OBS_OBJ_TYPE_INVALID;
+}
+
+const char *obs_obj_get_id(void *obj)
+{
+	struct obs_context_data *context = obj;
+	if (!context)
+		return NULL;
+
+	switch (context->type) {
+	case OBS_OBJ_TYPE_SOURCE:  return ((obs_source_t*)obj)->info.id;
+	case OBS_OBJ_TYPE_OUTPUT:  return ((obs_output_t*)obj)->info.id;
+	case OBS_OBJ_TYPE_ENCODER: return ((obs_encoder_t*)obj)->info.id;
+	case OBS_OBJ_TYPE_SERVICE: return ((obs_service_t*)obj)->info.id;
+	default:;
+	}
+
+	return NULL;
+}
+
+bool obs_obj_invalid(void *obj)
+{
+	struct obs_context_data *context = obj;
+	if (!context)
+		return true;
+
+	return !context->data;
 }
