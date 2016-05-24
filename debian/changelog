@@ -5,6 +5,7 @@ obs-studio (0.14.2+dfsg1-1) UNRELEASED; urgency=medium
   * debian/control:
     - Bump Standards-Version.
     - Add libasound2-dev to Build-Depends.
+    - Mention in Description minimal OpenGL requirement.
   * debian/copyright:
     - Update Files-Excluded for new upstream version.
     - Add license information for new files.
