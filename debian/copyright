@@ -59,7 +59,7 @@ License: GPL-2.0+
 Files: libobs/obs-nix.c
 Copyright: 2013 by Hugh Bailey <obs.jim@gmail.com>
            2014 by Zachary Lund <admin@computerquip.com>
-License: GPL-3.0+
+License: GPL-2.0+
 
 Files: libobs-opengl/gl-cocoa.m
        libobs/obs-cocoa.c
