@@ -114,6 +114,12 @@ Copyright:
  2008 Sean Fox <dyntryx@gmail.com>
 License: Expat
 
+Files: libobs/data/deinterlace*.effect
+Copyright: 2015-2016 Ruwen Hahn <palana@stunned.de>
+           2015-2016 John R. Bradley <jrb@turrettech.com>
+           2015-2016 Hugh Bailey "Jim" <obs.jim@gmail.com>
+License: Expat
+
 Files: plugins/obs-outputs/librtmp/*
 Copyright:
  2008-2009 Andrej Stepanchuk
