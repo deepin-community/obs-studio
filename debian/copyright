@@ -4,6 +4,7 @@ Source: https://obsproject.com
 Files-Excluded:
  plugins/win-*
  deps/w32-pthreads/need_errno.h
+ plugins/obs-qsv11/*
 
 Files: *
 Copyright: 2013-2016 by Hugh Bailey <obs.jim@gmail.com>
