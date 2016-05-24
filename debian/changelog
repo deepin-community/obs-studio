@@ -1,3 +1,17 @@
+obs-studio (0.14.2+dfsg1-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+  * debian/libobs0.symbols: Add new symbols.
+  * debian/control:
+    - Bump Standards-Version.
+    - Add libasound2-dev to Build-Depends.
+  * debian/copyright:
+    - Update Files-Excluded for new upstream version.
+    - Add license information for new files.
+    - Fix license information for libff and w32-pthreads.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Tue, 24 May 2016 22:27:02 +0200
+
 obs-studio (0.13.2+dfsg1-1) unstable; urgency=medium
 
   * Initial release (Closes: #774744)
