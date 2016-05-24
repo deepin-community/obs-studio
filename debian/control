@@ -52,6 +52,8 @@ Description: recorder and streamer for live video content
   * File output to MP4 or FLV
   * GPU-based game capture for high performance game streaming
   * Bilinear or lanczos3 resampling
+ .
+ Note that OBS Studio requires an OpenGL 3.2 compatible video card.
 
 Package: obs-plugins
 Multi-Arch: same
