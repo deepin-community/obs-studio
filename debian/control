@@ -34,6 +34,7 @@ Build-Depends:
  libxcb-xinerama0-dev,
  libxcomposite-dev,
  libxinerama-dev,
+ libvlc-dev,
  qtbase5-dev
 Standards-Version: 3.9.8
 Homepage: https://obsproject.com
@@ -60,6 +61,7 @@ Package: obs-plugins
 Multi-Arch: same
 Architecture: any-amd64
 Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: vlc
 Description: recorder and streamer for live video content (plugins)
  OBS is designed for efficiently recording and streaming live video content. It
  supports live RTP streaming to various streaming sites.
