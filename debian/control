@@ -43,7 +43,7 @@ Vcs-Git: https://anonscm.debian.org/git/pkg-multimedia/obs-studio.git
 
 Package: obs-studio
 Architecture: any-amd64
-Depends: obs-plugins (>= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
+Depends: obs-plugins (= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
 Description: recorder and streamer for live video content
  OBS Studio is designed for efficiently recording and streaming live video
  content. It supports live RTP streaming to various streaming sites.
