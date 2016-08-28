@@ -35,7 +35,8 @@ Build-Depends:
  libxcomposite-dev,
  libxinerama-dev,
  libvlc-dev,
- qtbase5-dev
+ qtbase5-dev,
+ python-docutils (>= 0.6)
 Standards-Version: 3.9.8
 Homepage: https://obsproject.com
 Vcs-Browser: https://anonscm.debian.org/cgit/pkg-multimedia/obs-studio.git

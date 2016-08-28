@@ -14,6 +14,10 @@ override_dh_auto_configure:
 		-DOBS_MULTIARCH_SUFFIX=/$(DEB_HOST_MULTIARCH) \
 		-DUNIX_STRUCTURE=1
 
+override_dh_auto_build:
+	dh_auto_build
+	rst2man debian/obs.rst > debian/obs.1
+
 override_dh_install:
 	mkdir -p debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/obs-plugins/obs-ffmpeg
 	mv debian/tmp/usr/share/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux \
