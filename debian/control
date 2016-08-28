@@ -23,6 +23,7 @@ Build-Depends:
  libjansson-dev (>= 2.5),
  libpulse-dev,
  libqt5x11extras5-dev,
+ libspeex-dev,
  libswresample-dev,
  libswscale-dev,
  libudev-dev,
