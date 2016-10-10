@@ -3,9 +3,9 @@ Author: Sebastian Ramacher <sramacher@debian.org>
 Forwarded: not-needed
 Last-Update: 2016-02-24
 
---- obs-studio-0.13.2+dfsg1.orig/obs/window-basic-main.cpp
-+++ obs-studio-0.13.2+dfsg1/obs/window-basic-main.cpp
-@@ -1729,7 +1729,7 @@ void OBSBasic::TimedCheckForUpdates()
+--- a/UI/window-basic-main.cpp
++++ b/UI/window-basic-main.cpp
+@@ -1926,7 +1926,7 @@
  #ifdef UPDATE_SPARKLE
  	init_sparkle_updater(config_get_bool(App()->GlobalConfig(), "General",
  				"UpdateToUndeployed"));
