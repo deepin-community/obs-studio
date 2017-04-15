@@ -1,6 +1,8 @@
 #include <QAction>
+#include <QGuiApplication>
 #include <QMouseEvent>
 #include <QMenu>
+#include <QScreen>
 #include "window-projector.hpp"
 #include "display-helpers.hpp"
 #include "qt-wrappers.hpp"
@@ -16,6 +18,9 @@ OBSProjector::OBSProjector(QWidget *widget, obs_source_t *source_)
 	                                "remove", OBSSourceRemoved, this)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
+
+	//disable application quit when last window closed
+	setAttribute(Qt::WA_QuitOnClose, false);
 
 	installEventFilter(CreateShortcutFilter());
 
@@ -47,11 +52,9 @@ OBSProjector::~OBSProjector()
 
 void OBSProjector::Init(int monitor)
 {
-	std::vector<MonitorInfo> monitors;
-	GetMonitors(monitors);
-	MonitorInfo &mi = monitors[monitor];
+	QScreen *screen = QGuiApplication::screens()[monitor];
 
-	setGeometry(mi.x, mi.y, mi.cx, mi.cy);
+	setGeometry(screen->geometry());
 
 	bool alwaysOnTop = config_get_bool(GetGlobalConfig(),
 			"BasicWindow", "ProjectorAlwaysOnTop");
@@ -68,6 +71,8 @@ void OBSProjector::Init(int monitor)
 	addAction(action);
 
 	connect(action, SIGNAL(triggered()), this, SLOT(EscapeTriggered()));
+
+	savedMonitor = monitor;
 }
 
 void OBSProjector::OBSRender(void *data, uint32_t cx, uint32_t cy)
@@ -112,6 +117,7 @@ void OBSProjector::OBSRender(void *data, uint32_t cx, uint32_t cy)
 void OBSProjector::OBSSourceRemoved(void *data, calldata_t *params)
 {
 	OBSProjector *window = reinterpret_cast<OBSProjector*>(data);
+
 	window->deleteLater();
 
 	UNUSED_PARAMETER(params);
@@ -130,5 +136,8 @@ void OBSProjector::mousePressEvent(QMouseEvent *event)
 
 void OBSProjector::EscapeTriggered()
 {
+	OBSBasic *main = reinterpret_cast<OBSBasic*>(App()->GetMainWindow());
+	main->RemoveSavedProjectors(savedMonitor);
+
 	deleteLater();
 }
