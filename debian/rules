@@ -12,7 +12,8 @@ export DEB_CPPFLAGS_MAINT_APPEND=-DFFMPEG_MUX_FIXED=\"/usr/lib/$(DEB_HOST_MULTIA
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		-DOBS_MULTIARCH_SUFFIX=/$(DEB_HOST_MULTIARCH) \
-		-DUNIX_STRUCTURE=1
+		-DUNIX_STRUCTURE=1 \
+		-DENABLE_WIN_UPDATER=0
 
 override_dh_auto_build:
 	dh_auto_build
