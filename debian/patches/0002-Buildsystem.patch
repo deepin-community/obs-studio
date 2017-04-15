@@ -6,18 +6,9 @@ Last-Update: 2016-02-24
 
 --- a/libobs/CMakeLists.txt
 +++ b/libobs/CMakeLists.txt
-@@ -13,6 +13,8 @@
- 
- if(UNIX)
- 	find_package(DBus QUIET)
-+	find_package(XCB COMPONENTS XCB REQUIRED)
-+	find_package(X11)
- else()
- 	set(HAVE_DBUS "0")
- endif()
-@@ -125,6 +127,23 @@
- 			${DBUS_LIBRARIES})
- 	endif()
+@@ -168,6 +168,23 @@
+ 		${libobs_PLATFORM_DEPS}
+ 		${X11_XCB_LIBRARIES})
  
 +	include_directories(
 +		${XCB_INCLUDE_DIRS}
@@ -39,7 +30,7 @@ Last-Update: 2016-02-24
  	if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
  		# use the sysinfo compatibility library on bsd
  		find_package(Libsysinfo REQUIRED)
-@@ -346,15 +365,11 @@
+@@ -401,15 +418,11 @@
  	PUBLIC
  		HAVE_OBSCONFIG_H)
  
@@ -58,30 +49,9 @@ Last-Update: 2016-02-24
  target_compile_options(libobs
  	PUBLIC
  		"${THREADS_DEFINITIONS}")
---- a/obs/CMakeLists.txt
-+++ b/obs/CMakeLists.txt
-@@ -81,16 +81,13 @@
- 	find_package(XCB COMPONENTS XCB REQUIRED RANDR REQUIRED XINERAMA REQUIRED)
- 	
- 	include_directories(
--		${XCB_INCLUDE_DIRS}
--		${X11_XCB_INCLUDE_DIRS})
-+		${XCB_INCLUDE_DIRS})
- 		
- 	add_definitions(
--		${XCB_DEFINITIONS}
--		${X11_XCB_DEFINITIONS})
-+		${XCB_DEFINITIONS})
- 
- 	set(obs_PLATFORM_LIBRARIES
- 		${XCB_LIBRARIES}
--		${X11_XCB_LIBRARIES}
-                 Qt5::X11Extras)
- endif()
- 
 --- a/libobs/util/c99defs.h
 +++ b/libobs/util/c99defs.h
-@@ -50,7 +50,7 @@
+@@ -46,7 +46,7 @@
  
  #define EXPORT __declspec(dllexport)
  #else
