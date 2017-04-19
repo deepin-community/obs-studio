@@ -20,6 +20,7 @@
 #include <wchar.h>
 #include <chrono>
 #include <ratio>
+#include <string>
 #include <sstream>
 #include <mutex>
 #include <util/bmem.h>
@@ -29,7 +30,9 @@
 #include <obs-config.h>
 #include <obs.hpp>
 
+#include <QGuiApplication>
 #include <QProxyStyle>
+#include <QScreen>
 
 #include "qt-wrappers.hpp"
 #include "obs-app.hpp"
@@ -49,6 +52,8 @@
 #include <signal.h>
 #endif
 
+#include <iostream>
+
 using namespace std;
 
 static log_handler_t def_log_handler;
@@ -57,11 +62,21 @@ static string currentLogFile;
 static string lastLogFile;
 
 static bool portable_mode = false;
+static bool log_verbose = false;
+static bool unfiltered_log = false;
 bool opt_start_streaming = false;
 bool opt_start_recording = false;
+bool opt_studio_mode = false;
+bool opt_start_replaybuffer = false;
+bool opt_minimize_tray = false;
 string opt_starting_collection;
 string opt_starting_profile;
 string opt_starting_scene;
+
+// AMD PowerXpress High Performance Flags
+#ifdef _MSC_VER
+extern "C" __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+#endif
 
 QObject *CreateShortcutFilter()
 {
@@ -268,6 +283,10 @@ static inline bool too_many_repeated_entries(fstream &logFile, const char *msg,
 
 	lock_guard<mutex> guard(log_mutex);
 
+	if (unfiltered_log) {
+		return false;
+	}
+
 	if (last_msg_ptr == msg) {
 		int diff = std::abs(new_sum - last_char_sum);
 		if (diff < MAX_CHAR_VARIATION) {
@@ -303,8 +322,22 @@ static void do_log(int log_level, const char *msg, va_list args, void *param)
 	vsnprintf(str, 4095, msg, args);
 
 #ifdef _WIN32
-	OutputDebugStringA(str);
-	OutputDebugStringA("\n");
+	if (IsDebuggerPresent()) {
+		int wNum = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
+		if (wNum > 1) {
+			static wstring wide_buf;
+			static mutex wide_mutex;
+
+			lock_guard<mutex> lock(wide_mutex);
+			wide_buf.reserve(wNum + 1);
+			wide_buf.resize(wNum - 1);
+			MultiByteToWideChar(CP_UTF8, 0, str, -1, &wide_buf[0],
+					wNum);
+			wide_buf.push_back('\n');
+
+			OutputDebugStringW(wide_buf.c_str());
+		}
+	}
 #else
 	def_log_handler(log_level, msg, args2, nullptr);
 #endif
@@ -312,7 +345,7 @@ static void do_log(int log_level, const char *msg, va_list args, void *param)
 	if (too_many_repeated_entries(logFile, msg, str))
 		return;
 
-	if (log_level <= LOG_INFO)
+	if (log_level <= LOG_INFO || log_verbose)
 		LogStringChunk(logFile, str);
 
 #if defined(_WIN32) && defined(OBS_DEBUGBREAK_ON_ERROR)
@@ -330,6 +363,8 @@ bool OBSApp::InitGlobalConfigDefaults()
 	config_set_default_uint(globalConfig, "General", "MaxLogs", 10);
 	config_set_default_string(globalConfig, "General", "ProcessPriority",
 			"Normal");
+	config_set_default_bool(globalConfig, "General", "EnableAutoUpdates",
+			true);
 
 #if _WIN32
 	config_set_default_string(globalConfig, "Video", "Renderer",
@@ -364,6 +399,8 @@ bool OBSApp::InitGlobalConfigDefaults()
 			"SysTrayEnabled", true);
 	config_set_default_bool(globalConfig, "BasicWindow",
 			"SysTrayWhenStarted", false);
+	config_set_default_bool(globalConfig, "BasicWindow",
+			"SaveProjectors", false);
 	config_set_default_bool(globalConfig, "BasicWindow",
 			"ShowTransitions", true);
 	config_set_default_bool(globalConfig, "BasicWindow",
@@ -413,7 +450,13 @@ static bool MakeUserDirs()
 		return false;
 	if (!do_mkdir(path))
 		return false;
+
+	if (GetConfigPath(path, sizeof(path), "obs-studio/updates") <= 0)
+		return false;
+	if (!do_mkdir(path))
+		return false;
 #endif
+
 	if (GetConfigPath(path, sizeof(path), "obs-studio/plugin_config") <= 0)
 		return false;
 	if (!do_mkdir(path))
@@ -448,7 +491,7 @@ static string GetProfileDirFromName(const char *name)
 	if (GetConfigPath(path, sizeof(path), "obs-studio/basic/profiles") <= 0)
 		return outputPath;
 
-	strcat(path, "/*.*");
+	strcat(path, "/*");
 
 	if (os_glob(path, 0, &glob) != 0)
 		return outputPath;
@@ -855,6 +898,9 @@ bool OBSApp::OBSInit()
 		if (!StartupOBS(locale.c_str(), GetProfilerNameStore()))
 			return false;
 
+		blog(LOG_INFO, "Portable mode: %s",
+				portable_mode ? "true" : "false");
+
 		mainWindow = new OBSBasic();
 
 		mainWindow->setAttribute(Qt::WA_DeleteOnClose, true);
@@ -904,6 +950,11 @@ string OBSApp::GetVersionString() const
 #endif
 
 	return ver.str();
+}
+
+bool OBSApp::IsPortableMode()
+{
+	return portable_mode;
 }
 
 #ifdef __APPLE__
@@ -1094,79 +1145,9 @@ string GenerateTimeDateFilename(const char *extension, bool noSpace)
 string GenerateSpecifiedFilename(const char *extension, bool noSpace,
 		const char *format)
 {
-	time_t now = time(0);
-	struct tm *cur_time;
-	cur_time = localtime(&now);
-
-	const size_t spec_count = 23;
-	const char *spec[][2] = {
-		{"%CCYY", "%Y"},
-		{"%YY",   "%y"},
-		{"%MM",   "%m"},
-		{"%DD",   "%d"},
-		{"%hh",   "%H"},
-		{"%mm",   "%M"},
-		{"%ss",   "%S"},
-		{"%%",    "%%"},
-
-		{"%a",    ""},
-		{"%A",    ""},
-		{"%b",    ""},
-		{"%B",    ""},
-		{"%d",    ""},
-		{"%H",    ""},
-		{"%I",    ""},
-		{"%m",    ""},
-		{"%M",    ""},
-		{"%p",    ""},
-		{"%S",    ""},
-		{"%y",    ""},
-		{"%Y",    ""},
-		{"%z",    ""},
-		{"%Z",    ""},
-	};
-
-	char convert[128] = {};
-	string sf = format;
-	string c;
-	size_t pos = 0, len;
-
-	while (pos < sf.length()) {
-		len = 0;
-		for (size_t i = 0; i < spec_count && len == 0; i++) {
-
-			if (sf.find(spec[i][0], pos) == pos) {
-				if (strlen(spec[i][1]))
-					strftime(convert, sizeof(convert),
-							spec[i][1], cur_time);
-				else
-					strftime(convert, sizeof(convert),
-							spec[i][0], cur_time);
-
-				len = strlen(spec[i][0]);
-
-				c = convert;
-				if (c.length() && c.find_first_not_of(' ') !=
-						std::string::npos)
-					sf.replace(pos, len, convert);
-			}
-		}
-
-		if (len)
-			pos += strlen(convert);
-		else if (!len && sf.at(pos) == '%')
-			sf.erase(pos,1);
-		else
-			pos++;
-	}
-
-	if (noSpace)
-		replace(sf.begin(), sf.end(), ' ', '_');
-
-	sf += '.';
-	sf += extension;
-
-	return (sf.length() < 256) ? sf : sf.substr(0, 255);
+	BPtr<char> filename = os_generate_formatted_filename(extension,
+			!noSpace, format);
+	return string(filename);
 }
 
 vector<pair<string, string>> GetLocaleNames()
@@ -1290,20 +1271,6 @@ static int run_program(fstream &logFile, int argc, char *argv[])
 
 	profiler_start();
 	profile_register_root(run_program_init, 0);
-
-	auto PrintInitProfile = [&]()
-	{
-		auto snap = GetSnapshot();
-
-		profiler_snapshot_filter_roots(snap.get(), [](void *data,
-					const char *name, bool *remove)
-		{
-			*remove = (*static_cast<const char**>(data)) != name;
-			return true;
-		}, static_cast<void*>(&run_program_init));
-
-		profiler_print(snap.get());
-	};
 
 	ScopeProfiler prof{run_program_init};
 
@@ -1520,20 +1487,10 @@ bool GetClosestUnusedFileName(std::string &path, const char *extension)
 
 bool WindowPositionValid(QRect rect)
 {
-	vector<MonitorInfo> monitors;
-	GetMonitors(monitors);
-
-	for (auto &monitor : monitors) {
-		int left   = int(monitor.x);
-		int top    = int(monitor.y);
-		int right  = left + int(monitor.cx);
-		int bottom = top  + int(monitor.cy);
-
-		if ((rect.left() - right)  < 0 && (left - rect.right())  < 0 &&
-		    (rect.top()  - bottom) < 0 && (top  - rect.bottom()) < 0)
+	for (QScreen* screen: QGuiApplication::screens()) {
+		if (screen->availableGeometry().intersects(rect))
 			return true;
 	}
-
 	return false;
 }
 
@@ -1796,11 +1753,20 @@ int main(int argc, char *argv[])
 		if (arg_is(argv[i], "--portable", "-p")) {
 			portable_mode = true;
 
+		} else if (arg_is(argv[i], "--verbose", nullptr)) {
+			log_verbose = true;
+
+		} else if (arg_is(argv[i], "--unfiltered_log", nullptr)) {
+			unfiltered_log = true;
+
 		} else if (arg_is(argv[i], "--startstreaming", nullptr)) {
 			opt_start_streaming = true;
 
 		} else if (arg_is(argv[i], "--startrecording", nullptr)) {
 			opt_start_recording = true;
+
+		} else if (arg_is(argv[i], "--startreplaybuffer", nullptr)) {
+			opt_start_replaybuffer = true;
 
 		} else if (arg_is(argv[i], "--collection", nullptr)) {
 			if (++i < argc) opt_starting_collection = argv[i];
@@ -1810,6 +1776,36 @@ int main(int argc, char *argv[])
 
 		} else if (arg_is(argv[i], "--scene", nullptr)) {
 			if (++i < argc) opt_starting_scene = argv[i];
+
+		} else if (arg_is(argv[i], "--minimize-to-tray", nullptr)) {
+			opt_minimize_tray = true;
+
+		} else if (arg_is(argv[i], "--studio-mode", nullptr)) {
+			opt_studio_mode = true;
+
+		} else if (arg_is(argv[i], "--help", "-h")) {
+			std::cout <<
+			"--help, -h: Get list of available commands.\n\n" << 
+			"--startstreaming: Automatically start streaming.\n" <<
+			"--startrecording: Automatically start recording.\n" <<
+			"--startreplaybuffer: Start replay buffer.\n\n" <<
+			"--collection <string>: Use specific scene collection."
+				<< "\n" <<
+			"--profile <string>: Use specific profile.\n" <<
+			"--scene <string>: Start with specific scene.\n\n" <<
+			"--studio-mode: Enable studio mode.\n" <<
+			"--minimize-to-tray: Minimize to system tray.\n" <<
+			"--portable, -p: Use portable mode.\n\n" <<
+			"--verbose: Make log more verbose.\n" <<
+			"--unfiltered_log: Make log unfiltered.\n\n" <<
+			"--version, -V: Get current version.\n";
+
+			exit(0);
+
+		} else if (arg_is(argv[i], "--version", "-V")) {
+			std::cout << "OBS Studio - " << 
+				App()->GetVersionString() << "\n";
+			exit(0);
 		}
 	}
 

@@ -117,6 +117,7 @@ public:
 	const char *GetCurrentLog() const;
 
 	std::string GetVersionString() const;
+	bool IsPortableMode();
 
 	const char *InputAudioSource() const;
 	const char *OutputAudioSource() const;
@@ -177,4 +178,7 @@ static inline int GetProfilePath(char *path, size_t size, const char *file)
 
 extern bool opt_start_streaming;
 extern bool opt_start_recording;
+extern bool opt_start_replaybuffer;
+extern bool opt_minimize_tray;
+extern bool opt_studio_mode;
 extern std::string opt_starting_scene;
