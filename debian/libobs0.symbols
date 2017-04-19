@@ -1,5 +1,6 @@
 libobs-frontend-api.so.0 libobs0 #MINVER#
  (c++|regex|optional)".*obs_frontend_set_callbacks_internal.*" 18.0.1
+ (c++|regex|optional)".*obs_frontend_callbacks.*" 18.0.1
  (c++|regex|optional)".*std::vector.*" 18.0.1
  obs_frontend_add_event_callback@Base 18.0.1
  obs_frontend_add_save_callback@Base 18.0.1
