@@ -3,7 +3,7 @@ Upstream-Name: obs-studio
 Source: https://obsproject.com
 Files-Excluded:
  plugins/win-*
- deps/w32-pthreads/*
+ deps/w32-pthreads/need_errno.h
  deps/jansson/*
  deps/blake2/*
  deps/lzma/*
@@ -16,6 +16,25 @@ License: GPL-2+
 Files: deps/glad/include/KHR/khrplatform.h
 Copyright: 2008-2009 The Khronos Group Inc
 License: Expat
+
+Files: deps/w32-pthreads/*
+Copyright:
+ 1998 John E. Bossom
+ 1999,2005 Pthreads-win32 contributors
+ 1998 Ben Elliston
+ 1998-2001 Ross Johnson
+License: LGPL-2+
+
+Files: deps/w32-pthreads/tests/cancel6a.c
+       deps/w32-pthreads/tests/cancel6d.c
+       deps/w32-pthreads/tests/mutex8.c
+       deps/w32-pthreads/tests/mutex8e.c
+       deps/w32-pthreads/tests/mutex8n.c
+       deps/w32-pthreads/tests/mutex8r.c
+Copyright:
+ 1998 Ben Elliston
+ 1998-2001 Ross Johnson
+License: LGPL-2.1+
 
 Files: deps/libff/*
 Copyright: 2014,2016 by Hugh Bailey <obs.jim@gmail.com>
