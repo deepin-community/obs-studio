@@ -89,7 +89,17 @@ Files: plugins/obs-outputs/librtmp/md5.c
        plugins/obs-outputs/librtmp/md5.h
 Copyright: none
 License: public-domain
-Comment: TODO
+ This software was written by Alexander Peslyak in 2001.  No copyright is
+ claimed, and the software is hereby placed in the public domain.
+ In case this attempt to disclaim copyright and place the software in the
+ public domain is deemed null and void, then the software is
+ Copyright (c) 2001 Alexander Peslyak and it is hereby released to the
+ general public under the following terms:
+ .
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted.
+ .
+ There's ABSOLUTELY NO WARRANTY, express or implied.
 
 License: BSD-3-clause
  Redistribution and use in source and binary forms, with or without
@@ -138,7 +148,6 @@ License: BSL
  FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  DEALINGS IN THE SOFTWARE.
-
 
 License: Expat
  Permission is hereby granted, free of charge, to any person obtaining a
