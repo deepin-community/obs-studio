@@ -7,6 +7,7 @@ Files-Excluded:
  deps/jansson/*
  deps/blake2/*
  deps/lzma/*
+ deps/libcaption/*
  plugins/obs-qsv11/*
 
 Files: *
