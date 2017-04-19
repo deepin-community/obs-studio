@@ -1,12 +1,17 @@
-Description: Various build system fixes
- This fixes issues with underlinking and build libobs with -fvisibility=hidden
- to hide internal symbols. It also disables -msse*.
-Author: Sebastian Ramacher <sramacher@debian.org>
-Last-Update: 2016-02-24
+From: Sebastian Ramacher <sramacher@debian.org>
+Date: Wed, 19 Apr 2017 21:45:40 +0200
+Subject: Build system fixes
 
+---
+ libobs/CMakeLists.txt | 27 ++++++++++++++++++++-------
+ libobs/util/c99defs.h |  2 +-
+ 2 files changed, 21 insertions(+), 8 deletions(-)
+
+diff --git a/libobs/CMakeLists.txt b/libobs/CMakeLists.txt
+index cd2b80e..de274dd 100644
 --- a/libobs/CMakeLists.txt
 +++ b/libobs/CMakeLists.txt
-@@ -168,6 +168,23 @@
+@@ -168,6 +168,23 @@ elseif(UNIX)
  		${libobs_PLATFORM_DEPS}
  		${X11_XCB_LIBRARIES})
  
@@ -30,7 +35,7 @@ Last-Update: 2016-02-24
  	if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
  		# use the sysinfo compatibility library on bsd
  		find_package(Libsysinfo REQUIRED)
-@@ -401,15 +418,11 @@
+@@ -401,15 +418,11 @@ target_compile_definitions(libobs
  	PUBLIC
  		HAVE_OBSCONFIG_H)
  
@@ -49,6 +54,8 @@ Last-Update: 2016-02-24
  target_compile_options(libobs
  	PUBLIC
  		"${THREADS_DEFINITIONS}")
+diff --git a/libobs/util/c99defs.h b/libobs/util/c99defs.h
+index 43d52c8..4890858 100644
 --- a/libobs/util/c99defs.h
 +++ b/libobs/util/c99defs.h
 @@ -46,7 +46,7 @@
