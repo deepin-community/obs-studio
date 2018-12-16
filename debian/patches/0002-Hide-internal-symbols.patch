@@ -8,10 +8,10 @@ Subject: Hide internal symbols
  2 files changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/libobs/CMakeLists.txt b/libobs/CMakeLists.txt
-index 00c0ebc..c82d94e 100644
+index bddfa5c..41ed749 100644
 --- a/libobs/CMakeLists.txt
 +++ b/libobs/CMakeLists.txt
-@@ -447,6 +447,10 @@ if(NOT MSVC)
+@@ -463,6 +463,10 @@ if(NOT MSVC)
  			-msse2)
  endif()
  
