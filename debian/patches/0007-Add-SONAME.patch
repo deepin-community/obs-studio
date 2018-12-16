@@ -7,12 +7,12 @@ Subject: Add SONAME
  1 file changed, 5 insertions(+)
 
 diff --git a/deps/obs-scripting/CMakeLists.txt b/deps/obs-scripting/CMakeLists.txt
-index 835c1b3..8aa6441 100644
+index dff5370..a79d1f0 100644
 --- a/deps/obs-scripting/CMakeLists.txt
 +++ b/deps/obs-scripting/CMakeLists.txt
-@@ -160,6 +160,11 @@ add_library(obs-scripting SHARED
- 	${SWIG_LUA_RUNTIME}
- 	)
+@@ -172,6 +172,11 @@ if(UNIX)
+ 	PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
+ endif()
  
 +set_target_properties(obs-scripting PROPERTIES
 +	OUTPUT_NAME obs-scripting
