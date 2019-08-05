@@ -7,7 +7,7 @@ Uploaders:
  Sebastian Ramacher <sramacher@debian.org>
 Build-Depends:
  cmake,
- debhelper-compat (= 11),
+ debhelper-compat (= 12),
  libasound2-dev,
  libavcodec-dev,
  libavdevice-dev,
