@@ -23,6 +23,7 @@ Build-Depends:
  libjansson-dev (>= 2.5),
  libluajit-5.1-dev,
  libpulse-dev,
+ libqt5svg5-dev,
  libqt5x11extras5-dev,
  libspeexdsp-dev,
  libswresample-dev,
