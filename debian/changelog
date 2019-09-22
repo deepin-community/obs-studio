@@ -1,8 +1,11 @@
-obs-studio (24.0.1+dfsg1-1) UNRELEASED; urgency=medium
+obs-studio (24.0.1+dfsg1-1) unstable; urgency=medium
 
   * New upstream release.
+  * debian/libobs0.symbols: Add new symbols
+  * debian/libobs-dev.install: Install pkgconfig file
+  * debian/control: Switch to python3-docutils
 
- -- Sebastian Ramacher <sramacher@debian.org>  Sun, 22 Sep 2019 23:29:25 +0200
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 22 Sep 2019 23:42:04 +0200
 
 obs-studio (23.2.1+dfsg1-1) unstable; urgency=medium
 
