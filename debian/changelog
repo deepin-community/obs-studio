@@ -1,3 +1,9 @@
+obs-studio (24.0.1+dfsg1-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 22 Sep 2019 23:29:25 +0200
+
 obs-studio (23.2.1+dfsg1-1) unstable; urgency=medium
 
   [ Ondřej Nový ]
