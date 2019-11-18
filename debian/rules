@@ -14,7 +14,8 @@ override_dh_auto_configure:
 		-DOBS_MULTIARCH_SUFFIX=/$(DEB_HOST_MULTIARCH) \
 		-DUNIX_STRUCTURE=1 \
 		-DDISABLE_UPDATE_MODULE=TRUE \
-		-DBUILD_CAPTIONS=0
+		-DBUILD_CAPTIONS=0 \
+		-DOBS_VERSION_OVERRIDE=${DEB_VERSION}
 
 override_dh_auto_build:
 	dh_auto_build
