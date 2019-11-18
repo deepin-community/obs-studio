@@ -8,6 +8,7 @@ Uploaders:
 Build-Depends:
  cmake,
  debhelper-compat (= 12),
+ dh-sequence-python3,
  libasound2-dev,
  libavcodec-dev,
  libavdevice-dev,
@@ -66,9 +67,8 @@ Description: recorder and streamer for live video content
  Note that OBS Studio requires an OpenGL 3.2 compatible video card.
 
 Package: obs-plugins
-Multi-Arch: same
 Architecture: any-amd64
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python3:Depends}
 Recommends: vlc
 Description: recorder and streamer for live video content (plugins)
  OBS is designed for efficiently recording and streaming live video content. It
