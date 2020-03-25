@@ -50,7 +50,7 @@ Build-Depends:
  python3-gi-cairo,
  qtbase5-dev,
  swig
-Standards-Version: 4.4.1
+Standards-Version: 4.5.0
 Homepage: https://obsproject.com
 Vcs-Browser: https://salsa.debian.org/multimedia-team/obs-studio
 Vcs-Git: https://salsa.debian.org/multimedia-team/obs-studio.git
