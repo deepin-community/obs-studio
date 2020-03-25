@@ -51,7 +51,6 @@ Files: cmake/Modules/FindJack.cmake
        libobs/util/profiler.c
        libobs/util/profiler.h
        libobs/util/profiler.hpp
-       libobs/util/vc/*
 Copyright: 2006, Alexander Chemeris
            2008, Andreas Schneider <mail@cynapses.org>
            2011, Fredrik Höglund <fredrik@kde.org>
@@ -105,17 +104,6 @@ Copyright: 2017-2018, Evan Nemerson <evan@nemerson.com>
 License: CC0-1.0
  On Debian systems, the complete text of the Creative Commons 1.0 Universal
  License can be found in "/usr/share/common-licenses/CC0-1.0".
-
-Files: libobs/util/vc/vc_stdint.h
-Copyright: none
-License: public-domain
- This source code is offered for use in the public domain. You may
- use, modify or distribute it freely.
- .
- This code is distributed in the hope that it will be useful but
- WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- DISCLAIMED. This includes but is not limited to warranties of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 Files: plugins/decklink/linux/decklink-sdk/*
        plugins/decklink/mac/decklink-sdk/*
