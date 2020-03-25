@@ -8,11 +8,12 @@ obs-studio (25.0.3+dfsg1-1) experimental; urgency=medium
   * debian/patches:
     - Refresh patches
     - Do not enable SSE2 on i386
+    - Remove executable bit from json files
    * debian/control:
     - Build on all architectures
     - Bump Standards-Version
 
- -- Sebastian Ramacher <sramacher@debian.org>  Wed, 25 Mar 2020 21:43:55 +0100
+ -- Sebastian Ramacher <sramacher@debian.org>  Wed, 25 Mar 2020 21:58:29 +0100
 
 obs-studio (24.0.6+dfsg1-1) unstable; urgency=medium
 
