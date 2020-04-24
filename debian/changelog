@@ -1,3 +1,22 @@
+obs-studio (25.0.3+dfsg1-2.1) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+  * debian/patches:
+     - Use the SIMD Everywhere headers from libsimde-dev, instead of upstream's
+       code copy
+  * debian/control
+     - Build-dep on libsimde-dev
+     - Add "Built-Using: ${simde:Built-Using}" to all the binary packages to
+       document the version of libsimde-dev used, as required to keep that
+       version in the Debian archive, which is needed to fulfill the GPL
+  * debian/copyright:
+     - exclude libobs/util/simde/* as we will use the files from libsimde-dev
+  * debian/rules:
+     - Include the recommended flags for SIMDe, especially important for
+       non-X86 architectures
+
+ -- Michael R. Crusoe <michael.crusoe@gmail.com>  Fri, 24 Apr 2020 17:44:40 +0200
+
 obs-studio (25.0.3+dfsg1-2) unstable; urgency=medium
 
   * Upload to unstable
