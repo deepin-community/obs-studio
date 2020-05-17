@@ -6,7 +6,7 @@ obs-studio (25.0.3+dfsg1-2.1) UNRELEASED; urgency=medium
        code copy
   * debian/control
      - Build-dep on libsimde-dev
-     - Add "Built-Using: ${simde:Built-Using}" to all the binary packages to
+     - Add "Built-Using: ${simde:Built-Using}" to libobs0 & obs-plugins to
        document the version of libsimde-dev used, as required to keep that
        version in the Debian archive, which is needed to fulfill the GPL
   * debian/copyright:

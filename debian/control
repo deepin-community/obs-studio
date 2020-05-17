@@ -59,7 +59,6 @@ Rules-Requires-Root: no
 
 Package: obs-studio
 Architecture: any
-Built-Using: ${simde:Built-Using}
 Depends: obs-plugins (= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}, ${python3:Depends}
 Description: recorder and streamer for live video content
  OBS Studio is designed for efficiently recording and streaming live video
@@ -100,7 +99,6 @@ Description: recorder and streamer for live video content (shared library)
 Package: libobs-dev
 Section: libdevel
 Architecture: any
-Built-Using: ${simde:Built-Using}
 Depends:
  libobs0 (= ${binary:Version}),
  ${misc:Depends}
