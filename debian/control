@@ -7,7 +7,7 @@ Uploaders:
  Sebastian Ramacher <sramacher@debian.org>
 Build-Depends:
  cmake,
- debhelper-compat (= 12),
+ debhelper-compat (= 13),
  dh-sequence-python3,
  dh-sequence-scour,
  gir1.2-rsvg-2.0,
