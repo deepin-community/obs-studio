@@ -18,8 +18,7 @@ override_dh_auto_configure:
 		-DBUILD_CAPTIONS=ON \
 		-DOBS_VERSION_OVERRIDE=${DEB_VERSION}
 
-override_dh_auto_build:
-	dh_auto_build
+execute_after_dh_auto_build:
 	rst2man debian/obs.rst > debian/obs.1
 
 override_dh_install:
@@ -29,9 +28,8 @@ override_dh_install:
 	dh_install
 	rm -rf debian/obs-studio/usr/share/obs/obs-studio/license
 
-override_dh_shlibdeps:
+execute_before_dh_shlibdeps:
 	echo "libobs 0 libobs0 (= ${DEB_VERSION})" > debian/shlibs.local
-	dh_shlibdeps
 
 override_dh_python3:
 	dh_python3 -p obs-plugins usr/share/obs/obs-plugins/frontend-tools/scripts
