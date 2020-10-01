@@ -32,7 +32,7 @@ execute_before_dh_shlibdeps:
 	echo "libobs 0 libobs0 (= ${DEB_VERSION})" > debian/shlibs.local
 
 override_dh_python3:
-	dh_python3 -p obs-plugins usr/share/obs/obs-plugins/frontend-tools/scripts
+	dh_python3 -p obs-studio usr/share/obs/obs-plugins/frontend-tools/scripts
 	dh_python3 -p obs-studio usr/lib/$(DEB_HOST_MULTIARCH)/obs-scripting
 
 override_dh_gencontrol:
