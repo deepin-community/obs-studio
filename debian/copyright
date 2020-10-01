@@ -5,7 +5,6 @@ Files-Excluded:
  CI/scripts/macos/app/*
  deps/blake2/*
  deps/jansson/*
- deps/libcaption/*
  deps/lzma/*
  deps/w32-pthreads/need_errno.h
  libobs/util/simde/*
