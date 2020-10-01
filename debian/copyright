@@ -70,6 +70,10 @@ Files: deps/glad/include/KHR/*
 Copyright: 2008-2009, The Khronos Group Inc
 License: Expat
 
+Files: deps/libcaption/*
+Copyright: 2016-2017, Twitch Interactive Inc. or its affiliates
+License: Expat
+
 Files: deps/w32-pthreads/*
 Copyright: 1998, Ben Elliston
            1998, John E. Bossom
