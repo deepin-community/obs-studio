@@ -1,0 +1,16 @@
+From: gregor herrmann <gregoa@debian.org>
+Subject: obs-studio: virtual camera not working, modinfo not in path
+Date: Wed, 23 Dec 2020 01:22:56 +0100
+Bug-Debian: https://bugs.debian.org/977928
+
+--- a/plugins/linux-v4l2/linux-v4l2.c
++++ b/plugins/linux-v4l2/linux-v4l2.c
+@@ -31,7 +31,7 @@
+ {
+ 	bool loaded = false;
+ 
+-	int ret = system("modinfo v4l2loopback >/dev/null 2>&1");
++	int ret = system("PATH=$PATH:/sbin modinfo v4l2loopback >/dev/null 2>&1");
+ 
+ 	if (ret == 0)
+ 		loaded = true;
