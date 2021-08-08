@@ -16,6 +16,8 @@ override_dh_auto_configure:
 		-DUNIX_STRUCTURE=TRUE \
 		-DDISABLE_UPDATE_MODULE=TRUE \
 		-DBUILD_CAPTIONS=ON \
+		-DBUILD_BROWSER=OFF \
+		-DBUILD_VST=OFF \
 		-DOBS_VERSION_OVERRIDE=${DEB_VERSION}
 
 execute_after_dh_auto_build:
