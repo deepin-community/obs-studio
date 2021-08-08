@@ -67,8 +67,6 @@ Recommends: obs-plugins (= ${binary:Version})
 Suggests:
  v4l2loopback-dkms,
  policykit-1
-Breaks: obs-plugins (<< 26.0.0+dfsg1-1)
-Replaces: obs-plugins (<< 26.0.0+dfsg1-1)
 Description: recorder and streamer for live video content
  OBS Studio is designed for efficiently recording and streaming live video
  content. It supports live RTP streaming to various streaming sites.
