@@ -7,7 +7,7 @@ Subject: Add SONAME
  1 file changed, 5 insertions(+)
 
 diff --git a/deps/obs-scripting/CMakeLists.txt b/deps/obs-scripting/CMakeLists.txt
-index e54f95c..25dbe7b 100644
+index e772ebd..87a712e 100644
 --- a/deps/obs-scripting/CMakeLists.txt
 +++ b/deps/obs-scripting/CMakeLists.txt
 @@ -208,6 +208,11 @@ if(UNIX)
