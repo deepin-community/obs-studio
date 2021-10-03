@@ -19,6 +19,7 @@ Build-Depends:
  libavutil-dev,
  libcurl4-gnutls-dev | libcurl-dev,
  libdbus-1-dev,
+ libdrm-dev,
  libfontconfig-dev,
  libfreetype6-dev,
  libgl1-mesa-dev | libgl-dev,
