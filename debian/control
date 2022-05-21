@@ -25,7 +25,7 @@ Build-Depends:
  libgl1-mesa-dev | libgl-dev,
  libjack-jackd2-dev,
  libjansson-dev,
- libluajit-5.1-dev,
+ libluajit-5.1-dev [!ppc64el],
  libmbedtls-dev,
  libpci-dev,
  libpipewire-0.3-dev,
