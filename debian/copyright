@@ -3,6 +3,7 @@ Upstream-Name: obs-studio
 Source: https://obsproject.com
 Files-Excluded:
  CI/scripts/macos/app/*
+ cmake/bundle
  deps/blake2/*
  deps/jansson/*
  deps/lzma/*
