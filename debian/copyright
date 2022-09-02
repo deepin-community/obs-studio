@@ -9,6 +9,8 @@ Files-Excluded:
  deps/lzma/*
  deps/w32-pthreads/need_errno.h
  libobs/util/simde/*
+ plugins/mac-*
+ plugins/obs-ffmpeg/external
  plugins/obs-qsv11/*
  plugins/win-*
 
