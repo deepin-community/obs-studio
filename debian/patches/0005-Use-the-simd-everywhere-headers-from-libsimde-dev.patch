@@ -3,16 +3,20 @@ Date: Mon, 27 Jul 2020 12:46:48 +0200
 Subject: Use the simd everywhere headers from libsimde-dev
 
 ---
- libobs/CMakeLists.txt    | 14 --------------
+ libobs/CMakeLists.txt    | 17 -----------------
  libobs/util/sse-intrin.h |  2 +-
- 2 files changed, 1 insertion(+), 15 deletions(-)
+ 2 files changed, 1 insertion(+), 18 deletions(-)
 
+diff --git a/libobs/CMakeLists.txt b/libobs/CMakeLists.txt
+index 9bb1b58..93d4044 100644
 --- a/libobs/CMakeLists.txt
 +++ b/libobs/CMakeLists.txt
-@@ -70,23 +70,6 @@
+@@ -68,23 +68,6 @@ target_sources(
+           obs-view.c
+           obs-config.h)
  
- target_sources(
-   libobs
+-target_sources(
+-  libobs
 -  PRIVATE util/simde/check.h
 -          util/simde/debug-trap.h
 -          util/simde/hedley.h
@@ -28,11 +32,11 @@ Subject: Use the simd everywhere headers from libsimde-dev
 -          util/simde/x86/sse2.h
 -          util/simde/x86/sse.h)
 -
--target_sources(
--  libobs
+ target_sources(
+   libobs
    PRIVATE callback/calldata.c
-           callback/calldata.h
-           callback/decl.c
+diff --git a/libobs/util/sse-intrin.h b/libobs/util/sse-intrin.h
+index 6441e80..677a40c 100644
 --- a/libobs/util/sse-intrin.h
 +++ b/libobs/util/sse-intrin.h
 @@ -25,5 +25,5 @@

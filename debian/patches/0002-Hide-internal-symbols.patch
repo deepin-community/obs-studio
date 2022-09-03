@@ -3,14 +3,15 @@ Date: Wed, 19 Apr 2017 21:45:40 +0200
 Subject: Hide internal symbols
 
 ---
- deps/obs-scripting/CMakeLists.txt | 12 ++++++++++++
- libobs/CMakeLists.txt             |  5 +++++
- libobs/util/c99defs.h             |  2 +-
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ deps/obs-scripting/CMakeLists.txt | 1 +
+ libobs/CMakeLists.txt             | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/deps/obs-scripting/CMakeLists.txt b/deps/obs-scripting/CMakeLists.txt
+index a919514..35a3534 100644
 --- a/deps/obs-scripting/CMakeLists.txt
 +++ b/deps/obs-scripting/CMakeLists.txt
-@@ -87,6 +87,7 @@
+@@ -87,6 +87,7 @@ set_target_properties(
    PROPERTIES FOLDER "scripting"
               VERSION "${OBS_VERSION_MAJOR}"
               SOVERSION "1")
@@ -18,9 +19,11 @@ Subject: Hide internal symbols
  
  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/swig)
  
+diff --git a/libobs/CMakeLists.txt b/libobs/CMakeLists.txt
+index 790583c..9bb1b58 100644
 --- a/libobs/CMakeLists.txt
 +++ b/libobs/CMakeLists.txt
-@@ -260,7 +260,7 @@
+@@ -260,7 +260,7 @@ set_target_properties(
  target_compile_definitions(
    libobs
    PUBLIC ${ARCH_SIMD_DEFINES}
