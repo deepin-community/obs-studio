@@ -4,3 +4,4 @@
 0004-Do-not-build-with-SSE2-enabled-on-i386.patch
 0005-Use-the-simd-everywhere-headers-from-libsimde-dev.patch
 0006-Do-not-build-unused-blake2-dependency.patch
+0007-Disable-obs-browser-check.patch
