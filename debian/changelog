@@ -1,3 +1,20 @@
+obs-studio (28.0.0+dfsg1-1) UNRELEASED; urgency=medium
+
+  [ Sebastian Ramacher ]
+  * New upstream version 28.0.0+dfsg1
+    * Refresh patches
+  * Remove cmake/bundle
+  * Exclude mac plugins and a copy of AMF
+  * Add BD on libffmpeg-nvenc-dev
+  * Add BD on libxcb-composite0-dev
+  * Disable browser check
+
+  [ IOhannes m zmölnig (Debian/GNU) ]
+  * Add salsa-ci configuration
+  * Refresh patches (again)
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Fri, 16 Sep 2022 21:50:12 +0200
+
 obs-studio (27.2.4+dfsg1-2) unstable; urgency=medium
 
   [ Debian Janitor ]
