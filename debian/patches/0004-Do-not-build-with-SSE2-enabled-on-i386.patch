@@ -7,11 +7,9 @@ Subject: Do not build with SSE2 enabled on i386
  cmake/external/ObsPluginHelpers.cmake | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/cmake/Modules/CompilerConfig.cmake b/cmake/Modules/CompilerConfig.cmake
-index c939146..804dc28 100644
---- a/cmake/Modules/CompilerConfig.cmake
-+++ b/cmake/Modules/CompilerConfig.cmake
-@@ -120,7 +120,7 @@ else()
+--- obs-studio.orig/cmake/Modules/CompilerConfig.cmake
++++ obs-studio/cmake/Modules/CompilerConfig.cmake
+@@ -120,7 +120,7 @@
  endif()
  
  if(LOWERCASE_CMAKE_SYSTEM_PROCESSOR MATCHES
@@ -20,11 +18,9 @@ index c939146..804dc28 100644
    if(NOT MSVC AND NOT CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")
      set(ARCH_SIMD_FLAGS -mmmx -msse -msse2)
    endif()
-diff --git a/cmake/external/ObsPluginHelpers.cmake b/cmake/external/ObsPluginHelpers.cmake
-index da2cdee..34b50aa 100644
---- a/cmake/external/ObsPluginHelpers.cmake
-+++ b/cmake/external/ObsPluginHelpers.cmake
-@@ -254,7 +254,7 @@ else()
+--- obs-studio.orig/cmake/external/ObsPluginHelpers.cmake
++++ obs-studio/cmake/external/ObsPluginHelpers.cmake
+@@ -254,7 +254,7 @@
    string(TOLOWER ${CMAKE_SYSTEM_PROCESSOR} _HOST_ARCH)
  endif()
  

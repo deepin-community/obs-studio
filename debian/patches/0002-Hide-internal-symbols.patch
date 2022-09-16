@@ -7,11 +7,9 @@ Subject: Hide internal symbols
  libobs/CMakeLists.txt             | 2 +-
  2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/deps/obs-scripting/CMakeLists.txt b/deps/obs-scripting/CMakeLists.txt
-index a919514..35a3534 100644
---- a/deps/obs-scripting/CMakeLists.txt
-+++ b/deps/obs-scripting/CMakeLists.txt
-@@ -87,6 +87,7 @@ set_target_properties(
+--- obs-studio.orig/deps/obs-scripting/CMakeLists.txt
++++ obs-studio/deps/obs-scripting/CMakeLists.txt
+@@ -87,6 +87,7 @@
    PROPERTIES FOLDER "scripting"
               VERSION "${OBS_VERSION_MAJOR}"
               SOVERSION "1")
@@ -19,11 +17,9 @@ index a919514..35a3534 100644
  
  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/swig)
  
-diff --git a/libobs/CMakeLists.txt b/libobs/CMakeLists.txt
-index 790583c..9bb1b58 100644
---- a/libobs/CMakeLists.txt
-+++ b/libobs/CMakeLists.txt
-@@ -260,7 +260,7 @@ set_target_properties(
+--- obs-studio.orig/libobs/CMakeLists.txt
++++ obs-studio/libobs/CMakeLists.txt
+@@ -260,7 +260,7 @@
  target_compile_definitions(
    libobs
    PUBLIC ${ARCH_SIMD_DEFINES}
