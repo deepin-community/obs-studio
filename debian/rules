@@ -16,7 +16,9 @@ override_dh_auto_configure:
 		-DUNIX_STRUCTURE=TRUE \
 		-DDISABLE_UPDATE_MODULE=TRUE \
 		-DBUILD_VST=OFF \
-		-DOBS_VERSION_OVERRIDE=${DEB_VERSION}
+		-DENABLE_AJA=OFF \
+		-DOBS_VERSION_OVERRIDE=${DEB_VERSION} \
+		$(empty)
 
 execute_after_dh_auto_build:
 	rst2man debian/obs.rst > debian/obs.1
