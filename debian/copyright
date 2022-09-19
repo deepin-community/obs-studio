@@ -2,6 +2,7 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: obs-studio
 Source: https://obsproject.com
 Files-Excluded:
+ .git*
  CI/scripts/macos/app/*
  cmake/bundle
  deps/blake2/*
