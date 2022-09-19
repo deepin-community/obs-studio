@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Multimedia Maintainers <debian-multimedia@lists.debian.org>
 Uploaders:
  Carl Fürstenberg <azatoth@gmail.com>,
- Sebastian Ramacher <sramacher@debian.org>
+ Sebastian Ramacher <sramacher@debian.org>,
 Build-Depends:
  cmake,
  debhelper-compat (= 13),
@@ -57,7 +57,7 @@ Build-Depends:
  python3-gi-cairo,
  qtbase5-dev,
  qtbase5-private-dev,
- swig
+ swig,
 Standards-Version: 4.6.0
 Homepage: https://obsproject.com
 Vcs-Browser: https://salsa.debian.org/multimedia-team/obs-studio
@@ -66,11 +66,15 @@ Rules-Requires-Root: no
 
 Package: obs-studio
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, ${python3:Depends}
-Recommends: obs-plugins (= ${binary:Version})
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends},
+Recommends:
+ obs-plugins (= ${binary:Version}),
 Suggests:
+ policykit-1,
  v4l2loopback-dkms,
- policykit-1
 Description: recorder and streamer for live video content
  OBS Studio is designed for efficiently recording and streaming live video
  content. It supports live RTP streaming to various streaming sites.
@@ -86,9 +90,13 @@ Description: recorder and streamer for live video content
 
 Package: obs-plugins
 Architecture: any
-Built-Using: ${simde:Built-Using}
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Recommends: vlc
+Built-Using:
+ ${simde:Built-Using},
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Recommends:
+ vlc,
 Description: recorder and streamer for live video content (plugins)
  OBS is designed for efficiently recording and streaming live video content. It
  supports live RTP streaming to various streaming sites.
@@ -99,8 +107,11 @@ Package: libobs0
 Multi-Arch: same
 Section: libs
 Architecture: any
-Built-Using: ${simde:Built-Using}
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Built-Using:
+ ${simde:Built-Using},
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
 Description: recorder and streamer for live video content (shared library)
  OBS Studio is designed for efficiently recording and streaming live video
  content. It supports live RTP streaming to various streaming sites.
@@ -114,7 +125,7 @@ Depends:
  libobs0 (= ${binary:Version}),
  libsimde-dev,
  libx11-dev,
- ${misc:Depends}
+ ${misc:Depends},
 Description: recorder and streamer for live video content (development files)
  OBS Studio is designed for efficiently recording and streaming live video
  content. It supports live RTP streaming to various streaming sites.
