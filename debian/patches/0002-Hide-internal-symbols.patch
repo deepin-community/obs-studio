@@ -7,24 +7,28 @@ Subject: Hide internal symbols
  libobs/CMakeLists.txt             | 2 +-
  2 files changed, 2 insertions(+), 1 deletion(-)
 
---- obs-studio.orig/deps/obs-scripting/CMakeLists.txt
-+++ obs-studio/deps/obs-scripting/CMakeLists.txt
-@@ -87,6 +87,7 @@
+Index: obs-studio-28.0.1+dfsg1/deps/obs-scripting/CMakeLists.txt
+===================================================================
+--- obs-studio-28.0.1+dfsg1.orig/deps/obs-scripting/CMakeLists.txt
++++ obs-studio-28.0.1+dfsg1/deps/obs-scripting/CMakeLists.txt
+@@ -87,6 +87,7 @@ set_target_properties(
    PROPERTIES FOLDER "scripting"
               VERSION "${OBS_VERSION_MAJOR}"
               SOVERSION "1")
-+target_compile_definitions(obs-scripting PRIVATE "-fvisibility=hidden")
++target_compile_options(obs-scripting PRIVATE "-fvisibility=hidden")
  
  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/swig)
  
---- obs-studio.orig/libobs/CMakeLists.txt
-+++ obs-studio/libobs/CMakeLists.txt
-@@ -260,7 +260,7 @@
- target_compile_definitions(
+Index: obs-studio-28.0.1+dfsg1/libobs/CMakeLists.txt
+===================================================================
+--- obs-studio-28.0.1+dfsg1.orig/libobs/CMakeLists.txt
++++ obs-studio-28.0.1+dfsg1/libobs/CMakeLists.txt
+@@ -268,7 +268,7 @@ target_compile_options(
    libobs
-   PUBLIC ${ARCH_SIMD_DEFINES}
--  PRIVATE IS_LIBOBS)
-+  PRIVATE IS_LIBOBS "-fvisibility=hidden")
+   PUBLIC ${ARCH_SIMD_FLAGS}
+   PRIVATE
+-    $<$<OR:$<C_COMPILER_ID:Clang>,$<C_COMPILER_ID:AppleClang>,$<C_COMPILER_ID:GNU>>:-Wno-switch>
++    $<$<OR:$<C_COMPILER_ID:Clang>,$<C_COMPILER_ID:AppleClang>,$<C_COMPILER_ID:GNU>>:-Wno-switch> "-fvisibility=hidden"
+ )
  
- target_compile_features(libobs PRIVATE cxx_alias_templates)
- 
+ target_include_directories(
