@@ -7,3 +7,4 @@
 0007-Disable-obs-browser-check.patch
 obs-websocket_use_system_libs.patch
 fix-spelling.patch
+reproducible.patch
