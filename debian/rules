@@ -11,6 +11,8 @@ export DEB_CXXFLAGS_MAINT_APPEND+=-DSIMDE_ENABLE_OPENMP -fopenmp-simd -O3
 	dh $@
 
 override_dh_auto_configure:
+	cp -r websocket plugins/obs-websocket
+	cp -r debian/extra/qr/cpp plugins/obs-websocket/deps/qr
 	dh_auto_configure -- \
 		-DOBS_MULTIARCH_SUFFIX=/$(DEB_HOST_MULTIARCH) \
 		-DUNIX_STRUCTURE=TRUE \
@@ -39,3 +41,8 @@ override_dh_python3:
 
 override_dh_gencontrol:
 	dh_gencontrol -- -Vsimde:Built-Using="$(shell dpkg-query -f '$${source:Package} (= $${source:Version}), ' -W "libsimde-dev")"
+
+
+execute_after_dh_clean:
+	rm -rf plugins/obs-websocket
+	rm -f cmake/.CMakeBuildNumber
