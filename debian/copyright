@@ -48,6 +48,17 @@ Copyright: 2007, Alexey Vatchenko <av@bsdua.org>
            2017, Ryan Foster <RytoEX@gmail.com>
 License: ISC
 
+Files: plugins/obs-ffmpeg/obs-ffmpeg-rist.h
+ plugins/obs-ffmpeg/obs-ffmpeg-srt.h
+Copyright: 2022, pkv@obsproject.com
+License: ISC
+
+Files: websocket/*
+Copyright: 2016-2021, Stephane Lepin <stephane.lepin@gmail.com>
+  2014, Leonhard Oelke <leonhard@in-verted.de>
+  2020-2022, Kyle Manning <tt2468@gmail.com>
+License: GPL-2+
+
 Files: cmake/Modules/FindJack.cmake
        cmake/Modules/FindThreads.cmake
        cmake/Modules/FindX11_XCB.cmake
@@ -66,8 +77,13 @@ License: BSD-3-clause
 
 Files: debian/*
 Copyright: 2015, Carl Fürstenberg <azatoth@gmail.com>
-           2016-2018, Sebastian Ramacher <sramacher@debian.org>
+           2016-2022, Sebastian Ramacher <sramacher@debian.org>
+           2022, IOhannes m zmölnig <umlaeute@debian.org>
 License: GPL-2+
+
+Files: debian/extra/qr/*
+Copyright: 2020, Project Nayuki.
+License: Expat
 
 Files: deps/glad/include/KHR/*
 Copyright: 2008-2009, The Khronos Group Inc
