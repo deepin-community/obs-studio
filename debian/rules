@@ -21,6 +21,7 @@ override_dh_auto_configure:
 		-DDISABLE_UPDATE_MODULE=TRUE \
 		-DBUILD_VST=OFF \
 		-DENABLE_AJA=OFF \
+		-DENABLE_JACK=TRUE \
 		-DOBS_VERSION_OVERRIDE=${mangled_version} \
 		$(empty)
 
