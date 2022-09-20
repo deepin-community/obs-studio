@@ -698,6 +698,7 @@ Files: AUTHORS
  debian/patches/0005-Use-the-simd-everywhere-headers-from-libsimde-dev.patch
  debian/patches/0006-Do-not-build-unused-blake2-dependency.patch
  debian/patches/0007-Disable-obs-browser-check.patch
+ debian/patches/obs-websocket_use_system_libs.patch
  debian/patches/series
  debian/rules
  debian/salsa-ci.yml
@@ -2434,6 +2435,71 @@ Files: AUTHORS
  test/test-input/test-sinewave.c
  test/win/CMakeLists.txt
  test/win/test.cpp
+ websocket/.clang-format
+ websocket/.cmake-format.json
+ websocket/.editorconfig
+ websocket/.markdownlintignore
+ websocket/.markdownlintrc
+ websocket/CI/generate-docs.sh
+ websocket/CMakeLists.txt
+ websocket/README.md
+ websocket/data/locale/ar-SA.ini
+ websocket/data/locale/ca-ES.ini
+ websocket/data/locale/cs-CZ.ini
+ websocket/data/locale/da-DK.ini
+ websocket/data/locale/de-DE.ini
+ websocket/data/locale/en-US.ini
+ websocket/data/locale/es-ES.ini
+ websocket/data/locale/et-EE.ini
+ websocket/data/locale/fa-IR.ini
+ websocket/data/locale/fi-FI.ini
+ websocket/data/locale/fr-FR.ini
+ websocket/data/locale/he-IL.ini
+ websocket/data/locale/hi-IN.ini
+ websocket/data/locale/hu-HU.ini
+ websocket/data/locale/hy-AM.ini
+ websocket/data/locale/id-ID.ini
+ websocket/data/locale/it-IT.ini
+ websocket/data/locale/ja-JP.ini
+ websocket/data/locale/ka-GE.ini
+ websocket/data/locale/kmr-TR.ini
+ websocket/data/locale/ko-KR.ini
+ websocket/data/locale/ms-MY.ini
+ websocket/data/locale/nl-NL.ini
+ websocket/data/locale/pl-PL.ini
+ websocket/data/locale/pt-BR.ini
+ websocket/data/locale/pt-PT.ini
+ websocket/data/locale/ro-RO.ini
+ websocket/data/locale/ru-RU.ini
+ websocket/data/locale/si-LK.ini
+ websocket/data/locale/sk-SK.ini
+ websocket/data/locale/sl-SI.ini
+ websocket/data/locale/sv-SE.ini
+ websocket/data/locale/tr-TR.ini
+ websocket/data/locale/uk-UA.ini
+ websocket/data/locale/zh-CN.ini
+ websocket/data/locale/zh-TW.ini
+ websocket/docs/README.md
+ websocket/docs/build_docs.sh
+ websocket/docs/comments/.npmrc
+ websocket/docs/comments/comments.js
+ websocket/docs/comments/config.json
+ websocket/docs/docs/generate_md.py
+ websocket/docs/docs/partials/enumsHeader.md
+ websocket/docs/docs/partials/eventsHeader.md
+ websocket/docs/docs/partials/introduction.md
+ websocket/docs/docs/partials/requestsHeader.md
+ websocket/docs/docs/process_comments.py
+ websocket/docs/generated/protocol.json
+ websocket/docs/generated/protocol.md
+ websocket/docs/versions.json
+ websocket/src/WebSocketApi.cpp
+ websocket/src/WebSocketApi.h
+ websocket/src/forms/ConnectInfo.ui
+ websocket/src/forms/SettingsDialog.ui
+ websocket/src/forms/images/help.svg
+ websocket/src/forms/images/help_light.svg
+ websocket/src/forms/resources.qrc
 Copyright: NONE
 License: UNKNOWN
  FIXME
@@ -3137,6 +3203,79 @@ Copyright: 2013, Hugh Bailey <obs.jim@gmail.com>
 License: ISC
  FIXME
 
+Files: websocket/lib/obs-websocket-api.h
+ websocket/src/Config.cpp
+ websocket/src/Config.h
+ websocket/src/eventhandler/EventHandler.cpp
+ websocket/src/eventhandler/EventHandler.h
+ websocket/src/eventhandler/EventHandler_Config.cpp
+ websocket/src/eventhandler/EventHandler_Filters.cpp
+ websocket/src/eventhandler/EventHandler_General.cpp
+ websocket/src/eventhandler/EventHandler_Inputs.cpp
+ websocket/src/eventhandler/EventHandler_MediaInputs.cpp
+ websocket/src/eventhandler/EventHandler_Outputs.cpp
+ websocket/src/eventhandler/EventHandler_SceneItems.cpp
+ websocket/src/eventhandler/EventHandler_Scenes.cpp
+ websocket/src/eventhandler/EventHandler_Transitions.cpp
+ websocket/src/eventhandler/EventHandler_Ui.cpp
+ websocket/src/eventhandler/types/EventSubscription.h
+ websocket/src/forms/ConnectInfo.cpp
+ websocket/src/forms/ConnectInfo.h
+ websocket/src/forms/SettingsDialog.cpp
+ websocket/src/forms/SettingsDialog.h
+ websocket/src/obs-websocket.cpp
+ websocket/src/obs-websocket.h
+ websocket/src/plugin-macros.h.in
+ websocket/src/requesthandler/RequestHandler.cpp
+ websocket/src/requesthandler/RequestHandler.h
+ websocket/src/requesthandler/RequestHandler_Config.cpp
+ websocket/src/requesthandler/RequestHandler_Filters.cpp
+ websocket/src/requesthandler/RequestHandler_General.cpp
+ websocket/src/requesthandler/RequestHandler_Inputs.cpp
+ websocket/src/requesthandler/RequestHandler_MediaInputs.cpp
+ websocket/src/requesthandler/RequestHandler_Outputs.cpp
+ websocket/src/requesthandler/RequestHandler_Record.cpp
+ websocket/src/requesthandler/RequestHandler_SceneItems.cpp
+ websocket/src/requesthandler/RequestHandler_Scenes.cpp
+ websocket/src/requesthandler/RequestHandler_Sources.cpp
+ websocket/src/requesthandler/RequestHandler_Stream.cpp
+ websocket/src/requesthandler/RequestHandler_Transitions.cpp
+ websocket/src/requesthandler/RequestHandler_Ui.cpp
+ websocket/src/requesthandler/rpc/Request.cpp
+ websocket/src/requesthandler/rpc/Request.h
+ websocket/src/requesthandler/rpc/RequestResult.cpp
+ websocket/src/requesthandler/rpc/RequestResult.h
+ websocket/src/requesthandler/types/RequestBatchExecutionType.h
+ websocket/src/requesthandler/types/RequestStatus.h
+ websocket/src/utils/Compat.cpp
+ websocket/src/utils/Compat.h
+ websocket/src/utils/Crypto.cpp
+ websocket/src/utils/Crypto.h
+ websocket/src/utils/Json.cpp
+ websocket/src/utils/Json.h
+ websocket/src/utils/Obs.cpp
+ websocket/src/utils/Obs.h
+ websocket/src/utils/Obs_ArrayHelper.cpp
+ websocket/src/utils/Obs_NumberHelper.cpp
+ websocket/src/utils/Obs_ObjectHelper.cpp
+ websocket/src/utils/Obs_StringHelper.cpp
+ websocket/src/utils/Obs_VolumeMeter.h
+ websocket/src/utils/Platform.cpp
+ websocket/src/utils/Platform.h
+ websocket/src/utils/Utils.h
+ websocket/src/websocketserver/WebSocketServer.cpp
+ websocket/src/websocketserver/WebSocketServer.h
+ websocket/src/websocketserver/WebSocketServer_Protocol.cpp
+ websocket/src/websocketserver/rpc/WebSocketSession.cpp
+ websocket/src/websocketserver/rpc/WebSocketSession.h
+ websocket/src/websocketserver/types/WebSocketCloseCode.h
+ websocket/src/websocketserver/types/WebSocketOpCode.h
+Copyright: 2016-2021, Stephane Lepin <stephane.lepin@gmail.com>
+  2020-2021, Kyle Manning <tt2468@gmail.com>
+  2020-2022, Kyle Manning <tt2468@gmail.com>
+License: GPL-2+
+ FIXME
+
 Files: deps/w32-pthreads/manual/pthread_attr_setstackaddr.html
  deps/w32-pthreads/manual/pthread_attr_setstacksize.html
  deps/w32-pthreads/manual/pthread_barrier_init.html
@@ -3353,6 +3492,17 @@ Copyright: 2020, Georges Basile Stavracas Neto <georges.stavracas@gmail.com>
 License: GPL-2+
  FIXME
 
+Files: websocket/lib/example/simplest-plugin.c
+ websocket/src/requesthandler/RequestBatchHandler.cpp
+ websocket/src/requesthandler/RequestBatchHandler.h
+ websocket/src/requesthandler/rpc/RequestBatchRequest.cpp
+ websocket/src/requesthandler/rpc/RequestBatchRequest.h
+ websocket/src/utils/Obs_ActionHelper.cpp
+ websocket/src/utils/Obs_SearchHelper.cpp
+Copyright: 2020-2021, Kyle Manning <tt2468@gmail.com>
+License: GPL-2+
+ FIXME
+
 Files: UI/data/themes/Acri.qss
  UI/data/themes/Dark.qss
  UI/data/themes/Grey.qss
@@ -3442,6 +3592,13 @@ Copyright: 2013, Hugh Bailey <obs.jim@gmail.com>
 License: GPL-2+
  FIXME
 
+Files: plugins/obs-ffmpeg/obs-ffmpeg-rist.h
+ plugins/obs-ffmpeg/obs-ffmpeg-srt.h
+ websocket/docs/comments/package.json
+Copyright: NONE
+License: ISC
+ FIXME
+
 Files: plugins/obs-outputs/librtmp/log.c
  plugins/obs-outputs/librtmp/log.h
  plugins/obs-outputs/librtmp/parseurl.c
@@ -3505,6 +3662,14 @@ Copyright: 2019, Ivan Avdeev <me@w23.ru>
 License: GPL-2+
  FIXME
 
+Files: websocket/src/utils/Obs_VolumeMeter.cpp
+ websocket/src/utils/Obs_VolumeMeter_Helpers.h
+Copyright: 2014, Leonhard Oelke <leonhard@in-verted.de>
+  2016-2021, Stephane Lepin <stephane.lepin@gmail.com>
+  2020-2021, Kyle Manning <tt2468@gmail.com>
+License: GPL-2+
+ FIXME
+
 Files: plugins/linux-v4l2/v4l2-decoder.c
  plugins/linux-v4l2/v4l2-decoder.h
 Copyright: 2020, Morten Bøgeskov <source@kosmisk.dk>
@@ -3521,12 +3686,6 @@ Files: plugins/obs-filters/color-correction-filter.c
  plugins/obs-filters/data/color_correction_filter.effect
 Copyright: 2016, c3r1c3 <c3r1c3@nevermindonline.com>
 License: GPL-2+
- FIXME
-
-Files: plugins/obs-ffmpeg/obs-ffmpeg-rist.h
- plugins/obs-ffmpeg/obs-ffmpeg-srt.h
-Copyright: NONE
-License: ISC
  FIXME
 
 Files: libobs/util/utf8.c
@@ -3546,6 +3705,12 @@ Files: plugins/obs-outputs/librtmp/hashswf.c
 Copyright: 2009-2010, Howard Chu
   2010, Howard Chu
 License: LGPL-2.1+
+ FIXME
+
+Files: debian/extra/qr/cpp/QrCode.cpp
+ debian/extra/qr/cpp/QrCode.hpp
+Copyright: Project Nayuki. (MIT License)
+License: UNKNOWN
  FIXME
 
 Files: plugins/obs-outputs/librtmp/cencode.c
@@ -3618,6 +3783,11 @@ Copyright: 2003, James Bursa <bursa@users.sourceforge.net>
 License: Expat
  FIXME
 
+Files: debian/extra/qr/Readme.markdown
+Copyright: 2020, Project Nayuki. (MIT License)
+License: Expat
+ FIXME
+
 Files: libobs/graphics/libnsgif/libnsgif.h
 Copyright: 2004, Richard Wilson <richard.wilson@netsurf-browser.org>
   2008, Sean Fox <dyntryx@gmail.com>
@@ -3642,6 +3812,11 @@ License: GPL-2
 
 Files: README.rst
 Copyright: NONE
+License: GPL-2+
+ FIXME
+
+Files: websocket/LICENSE
+Copyright: 1989, 1991, Free Software Foundation, Inc., <http://fsf.org/>
 License: GPL-2+
  FIXME
 
