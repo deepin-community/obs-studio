@@ -16,7 +16,8 @@ obs-studio (28.0.1+dfsg1-1) UNRELEASED; urgency=medium
   * Refresh patches (again)
   * Additional networking related B-Ds
   * Drop the '+dfsg' from the VERSION_OVERRIDE
-  * Explicitely enable JACK
+  * Explicitly enable JACK
+  * Explicitly disable sndio modules (Closes: #993458)
   * Disable AJA
   * Use reproducible build-date.
     Thanks to Vagrant Cascadian <vagrant@reproducible-builds.org>
@@ -30,7 +31,6 @@ obs-studio (28.0.1+dfsg1-1) UNRELEASED; urgency=medium
   * Use d/clean to cleanup temporary files
   * Do not embed RPATH/RUNPATH into binaries
   * Update description of obs-plugins (Closes: #993600)
-  * Explicitly disable sndio modules (Closes: #993458)
   * Update d/*.symbols
   * d/watch
     - Switch to new github location
