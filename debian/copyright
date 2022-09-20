@@ -21,6 +21,7 @@ Copyright: 2013-2017, Hugh Bailey <obs.jim@gmail.com>
            2014, Leonhard Oelke <leonhard@in-verted.de>
            2017, Fabio Madia <admshao@gmail.com>
            2017, Quinn Damerell <qdamere@microsoft.com>
+           2013-2022, The OBS Developers (see AUTHORS for a full list)
 License: GPL-2+
 
 Files: deps/ipc-util/ipc-util/*
