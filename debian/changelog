@@ -1,4 +1,6 @@
-obs-studio (28.0.0+dfsg1-1) UNRELEASED; urgency=medium
+obs-studio (28.0.1+dfsg1-1) UNRELEASED; urgency=medium
+
+  * New upstream version 28.0.1+dfsg1
 
   [ Sebastian Ramacher ]
   * New upstream version 28.0.0+dfsg1
@@ -10,10 +12,18 @@ obs-studio (28.0.0+dfsg1-1) UNRELEASED; urgency=medium
   * Disable browser check
 
   [ IOhannes m zmölnig (Debian/GNU) ]
-  * Add salsa-ci configuration
   * Refresh patches (again)
+  * Additional networking related B-Ds
+  * Disable AJA
+  * d/watch
+    - Switch to new github location
+    - Import Multi-Upstream-Tarballs
+  * Add patch to build obs-websocket against system libraries
+  * Add verbatim copy of Nayuki's Qr-Code-Generator
+  * Add salsa-ci configuration
+  * Apply 'wrap-and-sort -ast'
 
- -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Fri, 16 Sep 2022 21:50:12 +0200
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Tue, 20 Sep 2022 09:42:53 +0200
 
 obs-studio (27.2.4+dfsg1-2) unstable; urgency=medium
 
