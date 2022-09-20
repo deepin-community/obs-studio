@@ -31,6 +31,7 @@ execute_after_dh_auto_build:
 
 override_dh_install:
 	mkdir -p debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/obs-plugins/obs-ffmpeg
+	-find debian/tmp -type f -name "*.pem" -exec chmod a-x {} +
 	mv debian/tmp/usr/bin/obs-ffmpeg-mux \
 		debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/obs-plugins/obs-ffmpeg/obs-ffmpeg-mux
 	dh_install
