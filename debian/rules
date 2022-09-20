@@ -23,6 +23,7 @@ override_dh_auto_configure:
 		-DENABLE_AJA=OFF \
 		-DENABLE_JACK=TRUE \
 		-DOBS_VERSION_OVERRIDE=$(subst +dfsg,.1,$(DEB_VERSION)) \
+		-DAPPDATA_RELEASE_DATE=$(shell date --utc --date=@$${SOURCE_DATE_EPOCH} +'%Y-%m-%d') \
 		$(empty)
 
 execute_after_dh_auto_build:
