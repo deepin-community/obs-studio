@@ -61,7 +61,6 @@ Copyright: 2016-2021, Stephane Lepin <stephane.lepin@gmail.com>
 License: GPL-2+
 
 Files: cmake/Modules/FindJack.cmake
-       cmake/Modules/FindThreads.cmake
        cmake/Modules/FindX11_XCB.cmake
        cmake/Modules/FindXCB.cmake
        libobs/util/profiler.c
@@ -141,10 +140,6 @@ License: public-domain
  modification, are permitted.
  .
  There's ABSOLUTELY NO WARRANTY, express or implied.
-
-Files: plugins/obs-ffmpeg/external/nvEncodeAPI.h
-Copyright: 2010-2017, NVIDIA Corporation
-License: Expat
 
 License: BSD-3-clause
  Redistribution and use in source and binary forms, with or without
