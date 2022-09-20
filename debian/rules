@@ -47,10 +47,6 @@ override_dh_python3:
 override_dh_gencontrol:
 	dh_gencontrol -- -Vsimde:Built-Using="$(shell dpkg-query -f '$${source:Package} (= $${source:Version}), ' -W "libsimde-dev")"
 
-execute_after_dh_clean:
-	rm -rf plugins/obs-websocket
-	rm -f cmake/.CMakeBuildNumber
-
 ################################################################
 DEB_COPYRIGHT_CHECK_IGNORE_REGEX = \
 	(.*\.ttf|.*\.png|debian/copyright.*)
