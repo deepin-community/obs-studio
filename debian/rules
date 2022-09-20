@@ -14,7 +14,8 @@ export DEB_CXXFLAGS_MAINT_APPEND+=-DSIMDE_ENABLE_OPENMP -fopenmp-simd -O3
 
 override_dh_auto_configure:
 	cp -r websocket plugins/obs-websocket
-	cp -r debian/extra/qr/cpp plugins/obs-websocket/deps/qr
+	mkdir -p plugins/obs-websocket/deps
+	cp -r debian/extra/qr plugins/obs-websocket/deps/
 	dh_auto_configure -- \
 		-DOBS_MULTIARCH_SUFFIX=/$(DEB_HOST_MULTIARCH) \
 		-DUNIX_STRUCTURE=TRUE \
