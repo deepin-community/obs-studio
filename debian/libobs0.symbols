@@ -1,8 +1,7 @@
 libobs-frontend-api.so.0 libobs0 #MINVER#
  (c++|regex|optional)".*obs_frontend_set_callbacks_internal.*" 18.0.1
  (c++|regex|optional)".*obs_frontend_callbacks.*" 18.0.1
- (c++|regex|optional)".*std::.*" 18.0.1
- (c++|regex|optional)".*_Hashtable.*::find.*" 28.0.1
+ (c++|regex|optional=templinst)"^(void )?std::.*@Base" 18.0.1
  obs_frontend_add_dock@Base 23.2.1
  obs_frontend_add_event_callback@Base 18.0.1
  obs_frontend_add_preload_callback@Base 21.0.2
@@ -261,6 +260,7 @@ libobs-opengl.so.1 libobs0 #MINVER#
  program_update_params@Base 28.0.1
  update_buffer@Base 28.0.1
 libobs-scripting.so.1 libobs0 #MINVER#
+ (c++|regex|optional=templinst)"^std::.*@Base" 28.0.1
  obs_script_create@Base 28.0.1
  obs_script_destroy@Base 28.0.1
  obs_script_get_description@Base 28.0.1
