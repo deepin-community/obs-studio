@@ -42,9 +42,9 @@ obs-studio (28.0.1+dfsg1-1) UNRELEASED; urgency=medium
     * Drop superfluous file-patterns
     * Add 'licensecheck' target
     * Generate d/copyright_hints
+  * Bump standards version to 4.6.1
 
-
- -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Tue, 20 Sep 2022 16:46:41 +0200
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Tue, 20 Sep 2022 16:49:58 +0200
 
 obs-studio (27.2.4+dfsg1-2) unstable; urgency=medium
 
