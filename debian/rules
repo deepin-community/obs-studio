@@ -3,8 +3,6 @@
 include /usr/share/dpkg/architecture.mk
 include /usr/share/dpkg/pkg-info.mk
 
-mangled_version=$(subst +dfsg,.1,$(DEB_VERSION))
-
 export DEB_CPPFLAGS_MAINT_APPEND=-DFFMPEG_MUX_FIXED=\"/usr/lib/$(DEB_HOST_MULTIARCH)/obs-plugins/obs-ffmpeg/obs-ffmpeg-mux\"
 export DEB_CFLAGS_MAINT_APPEND+=-DSIMDE_ENABLE_OPENMP -fopenmp-simd -O3
 export DEB_CXXFLAGS_MAINT_APPEND+=-DSIMDE_ENABLE_OPENMP -fopenmp-simd -O3
@@ -24,7 +22,7 @@ override_dh_auto_configure:
 		-DBUILD_VST=OFF \
 		-DENABLE_AJA=OFF \
 		-DENABLE_JACK=TRUE \
-		-DOBS_VERSION_OVERRIDE=${mangled_version} \
+		-DOBS_VERSION_OVERRIDE=$(subst +dfsg,.1,$(DEB_VERSION)) \
 		$(empty)
 
 execute_after_dh_auto_build:
