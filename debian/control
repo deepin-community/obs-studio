@@ -105,6 +105,7 @@ Depends:
  ${shlibs:Depends},
 Recommends:
  vlc,
+Multi-Arch: same
 Description: recorder and streamer for live video content (plugins)
  OBS Studio is designed for efficiently recording and streaming live
  video content. It supports live RTP streaming to various streaming sites.
