@@ -5,6 +5,7 @@ Maintainer: Debian Multimedia Maintainers <debian-multimedia@lists.debian.org>
 Uploaders:
  Carl Fürstenberg <azatoth@gmail.com>,
  Sebastian Ramacher <sramacher@debian.org>,
+ IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>,
 Build-Depends:
  cmake,
  debhelper-compat (= 13),
