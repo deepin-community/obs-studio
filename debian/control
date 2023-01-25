@@ -81,7 +81,7 @@ Depends:
 Recommends:
  obs-plugins (= ${binary:Version}),
 Suggests:
- policykit-1,
+ pkexec | policykit-1,
  v4l2loopback-dkms,
 Breaks:
  obs-websocket (<< 4.9.0-2.1~),
