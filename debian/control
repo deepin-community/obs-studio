@@ -44,6 +44,7 @@ Build-Depends:
  libswscale-dev,
  libudev-dev,
  libv4l-dev,
+ libva-dev,
  libvlc-dev,
  libwayland-dev,
  libwebsocketpp-dev,
