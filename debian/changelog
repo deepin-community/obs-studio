@@ -1,4 +1,4 @@
-obs-studio (29.0.0+dfsg1-1) UNRELEASED; urgency=medium
+obs-studio (29.0.0+dfsg1-1) unstable; urgency=medium
 
   * New upstream version 29.0.0+dfsg1
     (Closes: #1023964)
@@ -16,11 +16,13 @@ obs-studio (29.0.0+dfsg1-1) UNRELEASED; urgency=medium
   * Update d/copyright
     + Modernize 'licensecheck' target
     + Re-generate d/copyright_hints
-  * Fix d/watch to handle pre-releases
+  * Update d/watch
+    + Properly handle pre-releases
+    + Drop repack-count (for future imports)
   * Apply 'wrap-and-sort -ast'
   * Bump standards version to 4.6.2
 
- -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Wed, 25 Jan 2023 16:35:31 +0100
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Wed, 25 Jan 2023 17:07:16 +0100
 
 obs-studio (28.0.1+dfsg1-3) unstable; urgency=medium
 
