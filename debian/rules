@@ -29,6 +29,7 @@ override_dh_auto_configure:
 	cp -r websocket plugins/obs-websocket
 	mkdir -p plugins/obs-websocket/deps
 	cp -r debian/extra/qr plugins/obs-websocket/deps/
+	-find plugins/obs-websocket/ -name ".git*" -exec rm -rf {} +
 	dh_auto_configure -- $(confflags)
 
 execute_after_dh_auto_build:
