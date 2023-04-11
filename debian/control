@@ -5,11 +5,7 @@ Maintainer: 8Mi_Yile <admin@8mi.tech>
 Build-Depends: debhelper (>= 11)
 Standards-Version: 29.0.2
 Homepage: https://github.com/deepin-community/obs-studio
-#Vcs-Browser: https://salsa.debian.org/debian/deepin-community-template-repository
-#Vcs-Git: https://salsa.debian.org/debian/deepin-community-template-repository.git
-
-Package: template-repository
+Package: obs-studio
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: OBS Studio - Free and open source software for live streaming and screen recording
