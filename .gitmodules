@@ -1,5 +1,4 @@
 [submodule "OBS-Studio"]
 	path = src
 	url = https://github.com/obsproject/obs-studio
-	branch = master
-	tag = 29.0.2
+	branch = release/29.0
