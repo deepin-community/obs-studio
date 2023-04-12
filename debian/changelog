@@ -22,4 +22,4 @@ Fixed a bug on macOS where the properties window would go behind the main window
 Fixed a bug where profile encoder settings would not properly update when switching between services that require a different encoder [tytan652]
 Fixed a bug in custom ffmpeg output mode where RTMP would force certain encoders [flaeri]
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+ -- OBS Project <contact@obsproject.com>  Sat, 28 Jan 2023 13:46:49 +0800
