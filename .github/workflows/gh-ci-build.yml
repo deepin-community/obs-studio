@@ -13,6 +13,7 @@ jobs:
           repository: "obsproject/obs-studio"
           ref: "refs/tags/29.0.2"
       - name: Prepare APT Depend
+        shell: bash
         run: |
           echo "首行不给看,要看指令的自己点展开” >> /dev/null
           echo "::group::APT Detect"
@@ -27,6 +28,7 @@ jobs:
           echo "::group::Plugin dependencies"
           apt install -y libasound2-dev libfdk-aac-dev libfontconfig-dev libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev libudev-dev libv4l-dev libva-dev libvlc-dev libdrm-dev
       - name: Build OBS Studio
+        shell: bash
         # working-directory: src
         run: |
           echo "首行不给看,要看指令的自己点展开” >> /dev/null
