@@ -15,7 +15,7 @@ jobs:
       - name: Prepare APT Depend
         shell: bash
         run: |
-          echo "首行不给看,要看指令的自己点展开” >> /dev/null
+          echo "首行不给看,要看指令的自己点展开" >> /dev/null
           echo "::group::APT Detect"
           apt update
           apt list | grep deepin
@@ -31,7 +31,7 @@ jobs:
         shell: bash
         # working-directory: src
         run: |
-          echo "首行不给看,要看指令的自己点展开” >> /dev/null
+          echo "首行不给看,要看指令的自己点展开" >> /dev/null
           echo "::group::OneKey Build OBS Studio"
           chmod +x CI/build-linux.sh
           CI/build-linux.sh --verbose --skip-dependency-checks --package --build-dir "/opt/apps/com.obsproject.studio"
