@@ -14,7 +14,7 @@ on:
       dns-server:
         description: 'DNS服务器'
         required: false
-        type: input
+        type: string
 jobs:
   deepin-beige:
     runs-on: ubuntu-latest
@@ -28,16 +28,22 @@ jobs:
           repository: "obsproject/obs-studio"
           ref: "refs/tags/29.0.2"
       - name: Set DNS Server
-        if: false
+        if: ${{ inputs.dns-server }}
         run: |
           # 首行不给看,要看指令的自己点展开
           # 他妈的还要另外设置DNS真的是醉了
           # 哦 内置地址不能在 GitHub 使用, 那没事了
-          echo "nameserver 1.1.1.1" > /etc/resolv.conf
+          echo "nameserver ${{ inputs.dns-server }}" > /etc/resolv.conf
       - name: Set APT URL
         run: |
           # 首行不给看,要看指令的自己点展开
-          echo "deb https://community-packages.deepin.com/beige/ beige main commercial community" > /etc/apt/sources.list
+          case ${{ inputs.apt-upgrade-channel }} in
+            "stable" ) url="$(echo "deb https://community-packages.deepin.com/beige/ beige main commercial community")" ;;
+            "unstable" ) url="$(echo "deb https://community-packages.deepin.com/beige/ beige main commercial community")" ;;
+            "testing" ) url="$(echo "deb https://community-packages.deepin.com/beige/ beige main commercial community")" ;;
+          esac  
+          echo "APT Upgrade Channel:"${{ inputs.apt-upgrade-channel }}
+          echo $url > /etc/apt/sources.list
       - name: Prepare APT Depend
         shell: bash
         run: |
