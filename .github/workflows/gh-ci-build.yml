@@ -1,5 +1,20 @@
 name: CI Test Build
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      apt-upgrade-channel:
+        description: 'APT更新通道'
+        required: true
+        type: choice
+        default: stable
+        options:
+        - stable
+        - unstable
+        - testing
+      dns-server:
+        description: 'DNS服务器'
+        required: false
+        type: input
 jobs:
   deepin-beige:
     runs-on: ubuntu-latest
