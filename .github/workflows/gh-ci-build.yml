@@ -12,10 +12,15 @@ jobs:
           submodules: true
           repository: "obsproject/obs-studio"
           ref: "refs/tags/29.0.2"
+      - name: Set DNS Server
+        run: |
+          # 首行不给看,要看指令的自己点展开
+          # 他妈的还要另外设置DNS真的是醉了
+          echo "nameserver 1.1.1.1" > /etc/resolv.conf
       - name: Prepare APT Depend
         shell: bash
         run: |
-          echo "首行不给看,要看指令的自己点展开" >> /dev/null
+          # 首行不给看,要看指令的自己点展开
           echo "::group::APT Detect"
           apt update
           echo "::group::Build system dependencies"
@@ -30,7 +35,7 @@ jobs:
         shell: bash
         # working-directory: src
         run: |
-          echo "首行不给看,要看指令的自己点展开" >> /dev/null
+          # 首行不给看,要看指令的自己点展开
           echo "::group::OneKey Build OBS Studio"
           chmod +x CI/build-linux.sh
           CI/build-linux.sh --verbose --skip-dependency-checks --package --build-dir "/opt/apps/com.obsproject.studio"
