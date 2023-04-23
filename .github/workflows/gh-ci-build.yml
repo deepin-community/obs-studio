@@ -1,0 +1,17 @@
+name: CI
+on: workflow_dispatch
+jobs:
+  deepin-beige:
+    runs-on: ubuntu-latest
+    container:
+      image: linuxdeepin/beige:base
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout Git Repository
+      - name: Build OBS Studio
+        working-directory: src
+        run: |
+          echo "首行不给看"
+          echo "::group::OneKey Build OBS Studio"
+          chmod +x CI/build-linux.sh
+          CI/build-linux.sh --verbose --package --build-dir "/opt/apps/com.obsproject.studio"
