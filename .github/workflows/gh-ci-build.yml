@@ -18,7 +18,6 @@ jobs:
           echo "首行不给看,要看指令的自己点展开" >> /dev/null
           echo "::group::APT Detect"
           apt update
-          apt list | grep deepin
           echo "::group::Build system dependencies"
           apt install -y cmake ninja-build pkg-config clang clang-format build-essential curl ccache git
           echo "::group::OBS dependencies（core）"
