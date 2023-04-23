@@ -10,8 +10,13 @@ jobs:
         name: Checkout Git Repository
         with:
           submodules: true
+          repository: "obsproject/obs-studio"
+          ref: "refs/tags/29.0.2"
+      - name: Prepare APT Depend
+        run: |
+          apt install -y cmake ninja-build pkg-config clang clang-format build-essential curl ccache git
       - name: Build OBS Studio
-        working-directory: src
+        # working-directory: src
         run: |
           echo "首行不给看"
           echo "::group::OneKey Build OBS Studio"
