@@ -1,4 +1,4 @@
-name: CI
+name: CI Test Build
 on: workflow_dispatch
 jobs:
   deepin-beige:
@@ -8,6 +8,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: Checkout Git Repository
+        with:
+          submodules: true
       - name: Build OBS Studio
         working-directory: src
         run: |
