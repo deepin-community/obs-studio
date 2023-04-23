@@ -22,6 +22,8 @@ jobs:
       image: linuxdeepin/beige:base
     steps:
       - name: Deepin Linux installation is complete
+        run: |
+          # Deepin Linux 安装完毕
       - uses: actions/checkout@v3
         name: Checkout Git Repository
         with:
