@@ -14,7 +14,7 @@ on:
       dns-server:
         description: 'DNS服务器'
         required: false
-        type: input
+        type: string
 jobs:
   deepin-beige:
     runs-on: ubuntu-latest
