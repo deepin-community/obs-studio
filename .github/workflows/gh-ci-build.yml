@@ -46,7 +46,7 @@ jobs:
             "testing" ) url="$(echo "deb [trusted=yes] https://ci.deepin.com/repo/release/beige/ testing main")" ;;
           esac  
           echo $url > /etc/apt/sources.list
-      - name: Prepare APT Depend
+      - name: Preparing Dependencies in APT
         shell: bash
         run: |
           # 首行不给看,要看指令的自己点展开
