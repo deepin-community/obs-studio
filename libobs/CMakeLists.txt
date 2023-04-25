@@ -193,7 +193,7 @@ target_sources(
           util/profiler.hpp
           util/pipe.h
           util/serializer.h
-          util/sse-intrin.h
+          #util/sse-intrin.h
           util/task.c
           util/task.h
           util/text-lookup.c
