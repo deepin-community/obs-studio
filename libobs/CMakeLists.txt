@@ -68,7 +68,7 @@ target_sources(
           obs-view.c
           obs-config.h)
 
-#[[target_sources(
+target_sources(
   libobs
   PRIVATE util/simde/check.h
           util/simde/debug-trap.h
@@ -83,7 +83,7 @@ target_sources(
           util/simde/simde-math.h
           util/simde/x86/mmx.h
           util/simde/x86/sse2.h
-          util/simde/x86/sse.h)]]
+          util/simde/x86/sse.h)
 
 target_sources(
   libobs
@@ -193,7 +193,7 @@ target_sources(
           util/profiler.hpp
           util/pipe.h
           util/serializer.h
-          #util/sse-intrin.h
+          util/sse-intrin.h
           util/task.c
           util/task.h
           util/text-lookup.c
