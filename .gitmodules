@@ -1,3 +1,0 @@
-[submodule "OBS-Studio"]
-	path = src
-	url = https://github.com/obsproject/obs-studio
