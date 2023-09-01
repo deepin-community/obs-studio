@@ -1,4 +1,68 @@
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+
+export DEB_CPPFLAGS_MAINT_APPEND=-DFFMPEG_MUX_FIXED=\"/usr/lib/$(DEB_HOST_MULTIARCH)/obs-plugins/obs-ffmpeg/obs-ffmpeg-mux\"
+export DEB_CFLAGS_MAINT_APPEND+=-DSIMDE_ENABLE_OPENMP -fopenmp-simd -O3
+export DEB_CXXFLAGS_MAINT_APPEND+=-DSIMDE_ENABLE_OPENMP -fopenmp-simd -O3
+
+confflags  = -DOBS_MULTIARCH_SUFFIX=/$(DEB_HOST_MULTIARCH)
+confflags += -DUNIX_STRUCTURE=TRUE
+confflags += -DCMAKE_SKIP_RPATH=TRUE
+confflags += -DDISABLE_UPDATE_MODULE=TRUE
+confflags += -DBUILD_VST=OFF
+confflags += -DENABLE_AJA=OFF
+confflags += -DENABLE_SNDIO=OFF
+confflags += -DENABLE_JACK=TRUE
+confflags += -DOBS_VERSION_OVERRIDE=$(subst +dfsg,.1,$(DEB_VERSION))
+confflags += -DAPPDATA_RELEASE_DATE=$(shell date --utc --date=@$${SOURCE_DATE_EPOCH} +'%Y-%m-%d')
+
+ifeq (ppc64el,$(DEB_HOST_ARCH))
+confflags += -DENABLE_SCRIPTING_LUA=OFF
+endif
+
 %:
 	dh $@
+
+execute_before_dh_auto_configure:
+	cp -r websocket plugins/obs-websocket
+	mkdir -p plugins/obs-websocket/deps
+	cp -r debian/extra/qr plugins/obs-websocket/deps/
+	-find plugins/obs-websocket/ -name ".git*" -exec rm -rf {} +
+override_dh_auto_configure:
+	dh_auto_configure -- $(confflags)
+
+execute_after_dh_auto_build:
+	rst2man debian/obs.rst > debian/obs.1
+
+execute_after_dh_auto_install:
+	-find debian/tmp -type f -name "*.pem" -exec chmod a-x {} +
+	mkdir -p debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/obs-plugins/obs-ffmpeg
+	mv debian/tmp/usr/bin/obs-ffmpeg-mux \
+		debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/obs-plugins/obs-ffmpeg/obs-ffmpeg-mux
+execute_after_dh_install:
+	rm -rf debian/obs-studio/usr/share/obs/obs-studio/license
+
+execute_before_dh_shlibdeps:
+	echo "libobs 0 libobs0 (= ${DEB_VERSION})" > debian/shlibs.local
+
+override_dh_python3:
+	dh_python3 -p obs-studio usr/share/obs/obs-plugins/frontend-tools/scripts
+	dh_python3 -p obs-studio usr/lib/$(DEB_HOST_MULTIARCH)/obs-scripting
+
+override_dh_gencontrol:
+	dh_gencontrol -- -Vsimde:Built-Using="$(shell dpkg-query -f '$${source:Package} (= $${source:Version}), ' -W "libsimde-dev")"
+
+################################################################
+DEB_COPYRIGHT_CHECK_IGNORE_REGEX = \
+	debian/.*|.*\.ttf|.*\.png
+# licensecheck v1
+.PHONY: licensecheck
+licensecheck:
+	LANG=C.UTF-8 licensecheck \
+		-i "^($(DEB_COPYRIGHT_CHECK_IGNORE_REGEX))$$" \
+		--check '.*' --recursive --deb-machine --lines 0 * \
+		> debian/copyright_newhints
+	cmp debian/copyright_hints debian/copyright_newhints \
+		&& rm debian/copyright_newhints
