@@ -129,13 +129,7 @@ Description: recorder and streamer for live video content (plugins)
  This package contains some extra plugins (ALSA, JACK, PipeWire, DeckLink,
  VLC).
 
-Package: libobs0t64
-Provides:
- ${t64:Provides},
-Replaces:
- libobs0,
-Breaks:
- libobs0 (<< ${source:Version}),
+Package: libobs0
 Multi-Arch: same
 Section: libs
 Architecture: any
@@ -154,7 +148,7 @@ Package: libobs-dev
 Section: libdevel
 Architecture: any
 Depends:
- libobs0t64 (= ${binary:Version}),
+ libobs0 (= ${binary:Version}),
  libsimde-dev,
  libx11-dev,
  ${misc:Depends},
